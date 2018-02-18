@@ -30,7 +30,7 @@ metadata {
 		attribute "tempString","string"
 		attribute "windString", "string"
         attribute "winddirection", "string"
-        attribute "wind_degrees", "string"
+//        attribute "wind_degrees", "string"
         attribute "wind_gust", "string"
         attribute "wind", "string"
 		attribute "winddirection_deg", "string"
@@ -78,8 +78,8 @@ metadata {
         attribute "Forecast1","string"
         attribute "Forecast2","string"
         attribute "Forecast3","string"
-        attribute "Forecast4","string"
-        attribute "Forecast5","string"
+ //       attribute "Forecast4","string"
+//        attribute "Forecast5","string"
         
         
         
@@ -226,7 +226,7 @@ metadata {
             state "true",        icon: "st.alarm.water.wet",        backgroundColor:"#ff9999"
             state "false",       icon: "st.alarm.water.dry",        backgroundColor:"#ffffff"
         }
-        valueTile("dewpoint", "device.dewpoint", inactiveLabel: false, width: 2, height: 1, decoration: "flat", wordWrap: true) {
+        valueTile("dewpoint", "device.dewPoint", inactiveLabel: false, width: 2, height: 1, decoration: "flat", wordWrap: true) {
             state "default", label:'Dewpoint ${currentValue}°'
         }
         valueTile("pressure", "device.pressureTrend", inactiveLabel: false, width: 3, height: 1, decoration: "flat", wordWrap: true) {
@@ -257,8 +257,8 @@ metadata {
 	//		state("location2Zip", label:"location2Zip", icon:"st.Food & Dining.dining13", backgroundColor:"#5F07F7")
 	//	}
 		standardTile("location1Zip", "device.location1Zip",width: 2, height: 2, inactiveLabel: false, decoration: "flat") {
-			state "active", label:"location1Zip", action:"location1Zip", icon:"https://github.com/Gopack2/A-Better-Weather/blob/master/Lighthouse%20Active.png?raw=true​"
-            state "inactive", label:"location1Zip", action:"location1Zip", icon:"https://github.com/Gopack2/A-Better-Weather/blob/master/Lighthouse%20Inactive.png?raw=true"
+			state "active", label: "location1Zip", action:"location1Zip", icon:"https://github.com/Gopack2/A-Better-Weather/blob/master/Lighthouse%20Active.png?raw=true​"
+            state "inactive", label: "location1Zip", action:"location1Zip", icon:"https://github.com/Gopack2/A-Better-Weather/blob/master/Lighthouse%20Inactive.png?raw=true"
 	    }
 		standardTile("location2Zip", "device.location2Zip", width: 2, height: 2,inactiveLabel: false,decoration: "flat" ) {
 			state "active", label:"location2Zip", action:"location2Zip", icon:"https://github.com/Gopack2/A-Better-Weather/blob/master/Cabin%20Active.png?raw=true"
@@ -273,10 +273,10 @@ metadata {
  		}
         
     main(["temperature2"])
-	      details(["alert", "location1Zip","location2Zip","location3Zip","temperature", "feelslike", "weatherIcon", 
-        	"weather", "humidity" , "dewpoint", "windinfo", "pressure", "solarradiation", "uv_index", 
+	      details(["alert", "location1Zip","location2Zip","location3Zip","temperature", "feelslike","weatherIcon","weather"
+        	, "humidity" , "dewpoint", "windinfo", "pressure", "solarradiation", "uv_index", 
           "light", "visibility", "city", "rise", "set", "lastSTupdate", "percentPrecip", "PrecipToday",
-          "PrecipLastHour", "water", "refresh","forecast","alertMessage"])
+          "PrecipLastHour", "water", "refresh"])
 //		main (["location"])
 //			details(["location1","location1Zip","location2Zip","location3Zip","alert","refresh"])
 }
@@ -342,7 +342,7 @@ def clearAttributeStates() {
 		send(name: "tempString",value:"")
 		send(name: "windString", value:"")
         send(name: "winddirection", value:"")
-        send(name: "wind_degrees", value:"")
+  //      send(name: "wind_degrees", value:"")
         send(name: "wind_gust", value:"")
         send(name: "wind", value:"")
 		send(name: "winddirection_deg", value:"")
@@ -430,17 +430,17 @@ def pressure_trend_text
 if (measUnits) {
             switch (measUnits) {
             case "imperial" :
-            	send(name: "temperature", value: Math.round(obs.temp_f), unit: "F")
-            	send(name: "feelsLike", value: Math.round(obs.feelslike_f as Double), unit: "F")
-            	send(name: "dewpoint", value: Math.round(obs.dewpoint_f as Double), unit: "F")
+            	send(name: "temperature", value: Math.round(obs.temp_f), unit: "° F")
+            	send(name: "feelsLike", value: Math.round(obs.feelslike_f as Double), unit: "° F")
+            	send(name: "dewPoint", value: Math.round(obs.dewpoint_f as Double), unit: "° F")
           		if ( obs.windchill_f == "NA") (
           			send(name: "windChill", value: "--"))
           		else ( 
-                	send(name: "windChill", value: Math.round(obs.windchill_f as Double), unit: "°F")
+                	send(name: "windChill", value: Math.round(obs.windchill_f as Double), unit: "° F")
           		)
           		          		 		 
                 if ( obs.heat_index_f == "NA") (
-                	send(name: "heatIndex", value: ""))
+                	send(name: "heatIndex", value: "--"))
                 else (send(name: "heatIndex", value: obs.heat_index_f)
                 )
                 send(name: "pressureTrend", value: "${obs.pressure_in} inches \n and (${pressure_trend_text})")
@@ -451,23 +451,23 @@ if (measUnits) {
                
               // send(name: "precipLastHour", value: "${obs.precip_1hr_in} in")
                 send(name: "windinfo", value: "${obs.wind_dir} (${obs.wind_degrees}°) at ${obs.wind_mph} mph\n(Gust: ${obs.wind_gust_mph} mph)")
-                send(name: "wind_gust", value: "${obs.wind_gust_mph}")
+                send(name: "wind_gust", value: "${obs.wind_gust_mph} mph")
                 send(name: "winddirection", value: "${obs.wind_dir}")
-                send(name: "winddirection_deg", value: "${obs.wind_degrees}")
-                send(name: "wind", value: "${obs.wind_mph}")
+                send(name: "winddirection_deg", value: "${obs.wind_degrees}°")
+                send(name: "wind", value: "${obs.wind_mph} mph")
                 
                 
                 break;
             case "metric":
-                send(name: "temperature", value: Math.round(obs.temp_c), unit: "C")
-            	send(name: "feelsLike", value: Math.round(obs.feelslike_c as Double), unit: "C")
-            	send(name: "dewpoint", value: Math.round(obs.dewpoint_c as Double), unit: "C")
+                send(name: "temperature", value: Math.round(obs.temp_c), unit: "° C")
+            	send(name: "feelsLike", value: Math.round(obs.feelslike_c as Double), unit: "° C")
+            	send(name: "dewPoint", value: Math.round(obs.dewpoint_c as Double), unit: "° C")
             	if ( obs.windchill_c== "NA") (
           			send(name: "windChill", value: "--"))
           		else ( send(name: "windChill", value: Math.round(obs.windchill_c as Double), unit: "°C")
           		)
    		 		if ( obs.heat_index_c == "NA") (
-                	send(name: "heatIndex", value: ""))
+                	send(name: "heatIndex", value: "--"))
                 else (send(name: "heatIndex", value: obs.heat_index_c)
                 )
                 send(name: "pressureTrend", value: "${obs.pressure_mb} mbar (${pressure_trend_text})")
@@ -476,17 +476,17 @@ if (measUnits) {
                 send(name: "precipToday", value: "${obs.precip_today_metric} mm")
                 send(name: "precipLastHour", value: "${obs.precip_1hr_metric} mm")
                 send(name: "windinfo", value: "${obs.wind_dir} (${obs.wind_degrees}°) at ${obs.wind_kph} kph\n(Gust: ${obs.wind_gust_kph} kph)")
-                send(name: "wind_gust", value: "${obs.wind_gust_kph}")
+                send(name: "wind_gust", value: "${obs.wind_gust_kph} kph")
                 send(name: "winddirection", value: "${obs.wind_dir}")
-                send(name: "winddirection_deg", value: "${obs.wind_degrees}")
-                send(name: "wind", value: "${obs.wind_kph}")
+                send(name: "winddirection_deg", value: "${obs.wind_degrees}°")
+                send(name: "wind", value: "${obs.wind_kph} kph")
                 
                 
                 break;
             default:
-            	send(name: "temperature", value: Math.round(obs.temp_f), unit: "F")
-            	send(name: "feelsLike", value: Math.round(obs.feelslike_f as Double), unit: "F")
-            	send(name: "dewpoint", value: Math.round(obs.dewpoint_f as Double), unit: "F")
+            	send(name: "temperature", value: Math.round(obs.temp_f), unit: "° F")
+            	send(name: "feelsLike", value: Math.round(obs.feelslike_f as Double), unit: "° F")
+            	send(name: "dewPoint", value: Math.round(obs.dewpoint_f as Double), unit: "° F")
  //           		send(name: "windChill", value: Math.round(obs.windchill_f as Double), unit: "°F")
  //  		 		send(name: "heatIndex", value: obs.heat_index_f)
                 send(name: "pressureTrend", value: "${obs.pressure_in} inches \n and (${pressure_trend_text})")
@@ -495,17 +495,17 @@ if (measUnits) {
                 send(name: "precipToday", value: "${obs.precip_today_in} in")
                 send(name: "precipLastHour", value: "${obs.precip_1hr_in} in")
                 send(name: "windinfo", value: "${obs.wind_dir} (${obs.wind_degrees}°) at ${obs.wind_mph} mph\n(Gust: ${obs.wind_gust_mph} mph)")
-                send(name: "wind_gust", value: "${obs.wind_gust_mph}")
+                send(name: "wind_gust", value: "${obs.wind_gust_mph} mph")
                 send(name: "winddirection", value: "${obs.wind_dir}")
-                send(name: "winddirection_deg", value: "${obs.wind_degrees}")
-                send(name: "wind", value: "${obs.wind_mph}")
+                send(name: "winddirection_deg", value: "${obs.wind_degrees}°")
+                send(name: "wind", value: "${obs.wind_mph} mph")
                 
             }
         } else {
-            	send(name: "temperature", value: Math.round(obs.temp_f), unit: "F")
-            	send(name: "feelsLike", value: Math.round(obs.feelslike_f as Double), unit: "F")
-            	send(name: "dewpoint", value: Math.round(obs.dewpoint_f as Double), unit: "F")
-            	//send(name: "windChill", value: Math.round(obs.windchill_f as Double), unit: "°F")
+            	send(name: "temperature", value: Math.round(obs.temp_f), unit: "° F")
+            	send(name: "feelsLike", value: Math.round(obs.feelslike_f as Double), unit: "° F")
+            	send(name: "dewPoint", value: Math.round(obs.dewpoint_f as Double), unit: "° F")
+            	//send(name: "windChill", value: Math.round(obs.windchill_f as Double), unit: "° F")
     			//send(name: "heatIndex", value: obs.heat_index_f)
                 send(name: "pressureTrend", value: "${obs.pressure_mb} mbar (${pressure_trend_text})")
             	send(name: "pressure", value: "${obs.pressure_mb} mbar ")
@@ -559,24 +559,29 @@ if (measUnits) {
 
         
         // Sunrise / sunset
-        def a = get("astronomy")?.moon_phase
-        def today = localDate("GMT${obs.local_tz_offset}")
-        def ltf = new java.text.SimpleDateFormat("yyyy-MM-dd HH:mm ")
-        ltf.setTimeZone(TimeZone.getTimeZone("GMT${obs.local_tz_offset}"))
-        def utf = new java.text.SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'")
-        utf.setTimeZone(TimeZone.getTimeZone("GMT"))
+        def astro = get("astronomy")?.moon_phase
+       // def today = localDate("GMT${obs.local_tz_offset}")
+      //  def ltf = new java.text.SimpleDateFormat("yyyy-MM-dd HH:mm ")
+      //  ltf.setTimeZone(TimeZone.getTimeZone("GMT${obs.local_tz_offset}"))
+     //   def utf = new java.text.SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'")
+     //   utf.setTimeZone(TimeZone.getTimeZone("GMT"))
 
         //def sunriseDate = ltf.parse("${today} ${a.sunrise.hour}:${a.sunrise.minute}")
         //def sunsetDate = ltf.parse("${today} ${a.sunset.hour}:${a.sunset.minute}")
 
-        def tf = new java.text.SimpleDateFormat("HH:mm")
-        tf.setTimeZone(TimeZone.getTimeZone("GMT${obs.local_tz_offset}"))
+       // def tf = new java.text.SimpleDateFormat("HH:mm")
+      //  tf.setTimeZone(TimeZone.getTimeZone("GMT${obs.local_tz_offset}"))
        // def localSunrise = "${tf.format(sunriseDate)}"
        // def localSunset = "${tf.format(sunsetDate)}"
-        send(name: "localSunrise", value: localSunrise, descriptionText: "Sunrise today is at $localSunrise")
-        send(name: "localSunset", value: localSunset, descriptionText: "Sunset today at is $localSunset")
-
-        //send(name: "illuminance", value: estimateLux(sunriseDate, sunsetDate, weatherIcon))
+       // def setHour = ${astro.sunset.hour}
+        send(name: "localSunset", value: "${astro.sunset.hour}"-12)
+        
+        
+      //  send(name: "localSunrise", value: localSunrise, descriptionText: "Sunrise today is at $localSunrise")
+        //send(name: "localSunset", value: localSunset, descriptionText: "Sunset today at is $localSunset")
+        
+        
+        
 
         // Forecast
  def f = get("forecast")
