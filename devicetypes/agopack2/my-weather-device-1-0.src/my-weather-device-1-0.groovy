@@ -74,13 +74,13 @@ metadata {
 
 
 // Forecast Attributes 
-        attribute "Forecast0","string"
-        attribute "Forecast1","string"
-        attribute "Forecast2","string"
-        attribute "Forecast3","string"
- //       attribute "Forecast4","string"
-//        attribute "Forecast5","string"
-        
+     	attribute "ForecastMonday", "string"
+        attribute "ForecastTuesday","string"
+        attribute "ForecastWednesday","string"
+        attribute "ForecastThursday","string"
+       	attribute "ForecastFriday","string"
+        attribute "ForecastSaturday","string"
+   		attribute "ForecastSunday", "string"     
         
         
         command "location1Zip"
@@ -364,6 +364,7 @@ def clearAttributeStates() {
     	send(name: "city", value:"")
      	send(name: "state", value:"")
         send(name: "country", value:"")
+        send(name: "Monday", value:"")
 //       send(name: "Zip",value:"")
 
 //	observation_location               
@@ -386,12 +387,12 @@ def clearAttributeStates() {
 
 
 // Forecast attributes
-        send(name: "Forecast0",value:"")
-        send(name: "Forecast1",value:"")
-        send(name: "Forecast2",value:"")
-        send(name: "Forecast3",value:"")
-        send(name: "Forecast4",value:"")
-        send(name: "Forecast5",value:"")
+        send(name: "Monday",value:"")
+        send(name: "Wednesday",value:"")
+        send(name: "Thursday",value:"")
+        send(name: "Friday",value:"")
+        send(name: "Saturday",value:"")
+        send(name: "Sunday",value:"")
 }
 
 def poll() {
@@ -512,15 +513,12 @@ if (measUnits) {
                 send(name: "visibility", value: "${obs.visibility_mi} mi")
                 send(name: "precipToday", value: "${obs.precip_today_in} in")
                 send(name: "precipLastHour", value: "${obs.precip_1hr_in} in")
-               
-                
-                
-        }      
+             }      
 				send(name: "tempString", value: obs.temperature_string)
  				send(name: "precipLastHourString", value: "${obs.precip_1hr_string}")
                 send(name: "precipTodayString", value: "${obs.precip_today_string}")
                 send(name: "windinfo", value: "${obs.wind_dir} (${obs.wind_degrees}°) at ${obs.wind_mph} mph\n(Gust: ${obs.wind_gust_mph} mph)")
-  send(name: "windString", value: "${obs.wind_string}")
+ 			 	send(name: "windString", value: "${obs.wind_string}")
                 
                 
 		send(name: "fullLocation", value: obs.display_location.full)
@@ -584,35 +582,42 @@ if (measUnits) {
         
 
         // Forecast
- def f = get("forecast")
+ def f = get("forecast10day")
         def f1= f?.forecast?.txt_forecast?.forecastday
         if (f1) {
             def icon = f1[0].icon_url.split("/")[-1].split("\\.")[0]
             def value = f1[0].pop as String // as String because of bug in determining state change of 0 numbers
             send(name: "percentPrecip", value: value, unit: "%")
             send(name: "forecastIcon", value: icon, displayed: false)
-            send(name: "Forecast0",value: "${f1[0].title}: ${f1[0].fcttext} \n ${f1[1].title}: ${f1[1].fcttext} ")
-        		switch(measUnits) {
+            switch(measUnits) {
                 	case "imperial" :
-                    	send(name: "Forecast0",value: "${f1[0].title}: ${f1[0].fcttext} \n ${f1[1].title}: ${f1[1].fcttext} ")
-                        send(name: "Forecast1",value: "${f1[2].title}: ${f1[2].fcttext} \n ${f1[3].title}: ${f1[3].fcttext} ")
-                        send(name: "Forecast2",value: "${f1[4].title}: ${f1[4].fcttext} \n ${f1[5].title}: ${f1[5].fcttext} ")
-                        send(name: "Forecast3",value: "${f1[6].title}: ${f1[6].fcttext} \n ${f1[7].title}: ${f1[7].fcttext} ")
-                	break;
+                    	send(name: "Forecast${f1[0].title}",value: "${f1[0].title}: ${f1[0].fcttext} \n ${f1[1].title}: ${f1[1].fcttext} ")
+                        send(name: "Forecast${f1[2].title}",value: "${f1[2].title}: ${f1[2].fcttext} \n ${f1[3].title}: ${f1[3].fcttext} ")
+                        send(name: "Forecast${f1[4].title}",value: "${f1[4].title}: ${f1[4].fcttext} \n ${f1[5].title}: ${f1[5].fcttext} ")
+                        send(name: "Forecast${f1[6].title}",value: "${f1[6].title}: ${f1[6].fcttext} \n ${f1[7].title}: ${f1[7].fcttext} ")
+                     	send(name: "Forecast${f1[8].title}",value: "${f1[8].title}: ${f1[8].fcttext} \n ${f1[9].title}: ${f1[11].fcttext} ")
+                     	send(name: "Forecast${f1[10].title}",value: "${f1[10].title}: ${f1[10].fcttext} \n ${f1[11].title}: ${f1[13].fcttext} ")
+                     	send(name: "Forecast${f1[12].title}",value: "${f1[12].title}: ${f1[12].fcttext} \n ${f1[13].title}: ${f1[13].fcttext} ")
+                       	break;
                 	case "metric" :
-                    	send(name: "Forecast0",value: "${f1[0].title}: ${f1[0].fcttext_metric} \n ${f1[1].title}: ${f1[1].fcttext_metric} ")
-                        send(name: "Forecast1",value: "${f1[2].title}: ${f1[2].fcttext_metric} \n ${f1[3].title}: ${f1[3].fcttext_metric} ")
-                        send(name: "Forecast2",value: "${f1[4].title}: ${f1[4].fcttext_metric} \n ${f1[5].title}: ${f1[5].fcttext_metric} ")
-                        send(name: "Forecast3",value: "${f1[6].title}: ${f1[6].fcttext_metric} \n ${f1[7].title}: ${f1[7].fcttext_metric} ")
-                      
+                    	send(name: "Forecast${f1[0].title}",value: "${f1[0].title}: ${f1[0].fcttext_metric} \n ${f1[1].title}: ${f1[1].fcttext_metric} ")
+                        send(name: "Forecast${f1[2].title}",value: "${f1[2].title}: ${f1[2].fcttext_metric} \n ${f1[3].title}: ${f1[3].fcttext_metric} ")
+                        send(name: "Forecast${f1[4].title}",value: "${f1[4].title}: ${f1[4].fcttext_metric} \n ${f1[5].title}: ${f1[5].fcttext_metric} ")
+                        send(name: "Forecast${f1[6].title}",value: "${f1[6].title}: ${f1[6].fcttext_metric} \n ${f1[7].title}: ${f1[7].fcttext_metric} ")
+                     	send(name: "Forecast${f1[8].title}",value: "${f1[8].title}: ${f1[8].fcttext_metric} \n ${f1[9].title}: ${f1[11].fcttext_metric} ")
+                     	send(name: "Forecast${f1[10].title}",value: "${f1[10].title}: ${f1[10].fcttext_metric} \n ${f1[11].title}: ${f1[13].fcttext_metric} ")
+                     	send(name: "Forecast${f1[12].title}",value: "${f1[12].title}: ${f1[12].fcttext_metric} \n ${f1[13].title}: ${f1[13].fcttext_metric} ")
                 	break;
                     default:
-                    	send(name: "Forecast0",value: "${f1[0].title}: ${f1[0].fcttext} \n ${f1[1].title}: ${f1[1].fcttext} ")
-                        send(name: "Forecast1",value: "${f1[2].title}: ${f1[2].fcttext} \n ${f1[3].title}: ${f1[3].fcttext} ")
-                        send(name: "Forecast2",value: "${f1[4].title}: ${f1[4].fcttext} \n ${f1[5].title}: ${f1[5].fcttext} ")
-                        send(name: "Forecast3",value: "${f1[6].title}: ${f1[6].fcttext} \n ${f1[7].title}: ${f1[7].fcttext} ")
-			      }
-}
+                    	send(name: "Forecast${f1[0].title}",value: "${f1[0].title}: ${f1[0].fcttext} \n ${f1[1].title}: ${f1[1].fcttext} ")
+                        send(name: "Forecast${f1[2].title}",value: "${f1[2].title}: ${f1[2].fcttext} \n ${f1[3].title}: ${f1[3].fcttext} ")
+                        send(name: "Forecast${f1[4].title}",value: "${f1[4].title}: ${f1[4].fcttext} \n ${f1[5].title}: ${f1[5].fcttext} ")
+                        send(name: "Forecast${f1[6].title}",value: "${f1[6].title}: ${f1[6].fcttext} \n ${f1[7].title}: ${f1[7].fcttext} ")
+                     	send(name: "Forecast${f1[8].title}",value: "${f1[8].title}: ${f1[8].fcttext} \n ${f1[9].title}: ${f1[11].fcttext} ")
+                     	send(name: "Forecast${f1[10].title}",value: "${f1[10].title}: ${f1[10].fcttext} \n ${f1[11].title}: ${f1[13].fcttext} ")
+                     	send(name: "Forecast${f1[12].title}Forecast",value: "${f1[12].title}: ${f1[12].fcttext} \n ${f1[13].title}: ${f1[13].fcttext} ")
+                  }
+		}
         else {
             log.warn "Forecast not found"
         }
