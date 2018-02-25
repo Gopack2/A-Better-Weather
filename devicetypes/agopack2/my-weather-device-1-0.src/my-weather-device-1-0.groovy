@@ -255,14 +255,9 @@ metadata {
 					[value: 98, color: "#bc2323"]
             ]
         }
-  //      standardTile("location", "device.city", inactiveLabel: true, width: 2, height: 3) {
-	//		state("location1Zip", label:"location1Zip", icon:"http://cdn.device-icons.smartthings.com/Outdoor/outdoor4-icn@2x.png", backgroundColor:"#FC030F")
-	//		state("location3Zip", label:"location3Zip", value: ZipCode, icon:"st.Food & Dining.dining12",backgroundColor:"#07F7D7")
-	//		state("location2Zip", label:"location2Zip", icon:"st.Food & Dining.dining13", backgroundColor:"#5F07F7")
-	//	}
-		standardTile("location1", "device.location1", width: 2, height: 2,  inactiveLabel: false, decoration: "flat") {
-			state "active", action:"location1Zip", label: "Loc 1", icon:"https://github.com/Gopack2/A-Better-Weather/blob/master/Lighthouse%20Active.png?raw=true"
-          	state "inactive", action:"location1Zip",label: "Loc 1", icon:"https://github.com/Gopack2/A-Better-Weather/blob/master/Lighthouse%20Inactive.png?raw=true"
+  standardTile("location1", "device.location1", width: 2, height: 2,  inactiveLabel: false, decoration: "flat") {
+			state "${location1Name} active", action: "location1Zip", label:'${currentValue}', icon:"https://github.com/Gopack2/A-Better-Weather/blob/master/Lighthouse%20Active.png?raw=true"
+          	state "${location1Name}\n inactive", action:"location1Zip",label: "Loc 1", icon:"https://github.com/Gopack2/A-Better-Weather/blob/master/Lighthouse%20Inactive.png?raw=true"
 	    }
 		standardTile("location2", "device.location2", width: 2, height: 2,inactiveLabel: false,decoration: "flat" ) {
 			state "active", label:"Loc 2", action:"location2Zip", icon:"https://github.com/Gopack2/A-Better-Weather/blob/master/Cabin%20Active.png?raw=true"
@@ -272,6 +267,10 @@ metadata {
 			state "active", label:"Loc 3", action:"location3Zip", icon:"https://github.com/Gopack2/A-Better-Weather/blob/master/Arizona%20Active.png?raw=true"
 			state "inactive", label:"Loc 3", action:"location3Zip", icon:"https://github.com/Gopack2/A-Better-Weather/blob/master/Arizona%20Inactiuve.png?raw=true"
         }   
+        valueTile("forecast", "device.Forecast0", width: 6, height: 6, canChangeBackground: true) {
+ 		state "longitude", label: '${currentValue}'
+ 		}
+		
         valueTile("forecast", "device.Forecast0", width: 6, height: 6, canChangeBackground: true) {
  		state "longitude", label: '${currentValue}'
  		}
@@ -299,33 +298,33 @@ def updated() {
 	log.debug "UPDATED!"
     //unschedule()
     sendEvent("name":"Zip","value":location1Zip)
-    sendEvent(name:"location1", value:"${location1Name}")
 	poll()
    	runEvery15Minutes(poll)
 }
 // My City Button Controls
 def location1Zip() {
-    sendEvent(name: "city", value: "location1Zip")   
+    sendEvent(name: "city", "value":location1Name)   
     sendEvent(name:"Zip","value":location1Zip)
-    sendEvent(name:"location3",value:"inactive")
- 	sendEvent(name:"location2",value:"inactive")
-	sendEvent(name:"location1",value:"active")
+    sendEvent(name:"location3",value:"${location2Name}\n inactive")
+ 	sendEvent(name:"location2",value:"${location3Name}\n inactive")
+	sendEvent(name:"location1",value:"${location1Name}\n active")
     poll()
 }
 def location2Zip() {
     sendEvent(name: "city", value:"location2Zip")
     sendEvent(name:"Zip","value":location2Zip)
-    sendEvent(name:"location3",value:"inactive")
- 	sendEvent(name:"location1",value:"inactive")
-	sendEvent(name:"location2",value:"active")
-    poll()
+    sendEvent(name:"location3",value:"${location3Name}\n inactive")
+ 	sendEvent(name:"location1",value:"${location1Name}\n inactive")
+	sendEvent(name:"location2",value:"${location2Name}\n active")
+   
+   poll()
 }
 def location3Zip() {
     sendEvent(name: "city", value: "location3Zip")
     sendEvent(name:"Zip","value":location3Zip)
-    sendEvent(name:"location2",value:"inactive")
-    sendEvent(name:"location1",value:"inactive")
-    sendEvent(name:"location3",value:"active")
+    sendEvent(name:"location2",value:"${location2Name}\n inactive")
+    sendEvent(name:"location1",value:"${location1Name}\n inactive")
+    sendEvent(name:"location3",value:"${location3Name}\n active")
   	poll()
 }
 // handle commands
@@ -385,6 +384,11 @@ def clearAttributeStates() {
 def poll() {
     log.debug "WUSTATION: Executing 'poll', location: ${location.name}"
     
+    
+    
+    
+    
+    
    clearAttributeStates
 // clear attributes
 clearAttributeStates()
@@ -418,7 +422,9 @@ def pressure_trend_text
 
 if (measUnits) {
             switch (measUnits) {
+            
             case "imperial" :
+            
             	send(name: "temperature", value: Math.round(obs.temp_f), unit: "° F", displayed: false)
             	send(name: "feelsLike", value: Math.round(obs.feelslike_f as Double), unit: "° F", displayed: false)
             	send(name: "dewPoint", value: Math.round(obs.dewpoint_f as Double), unit: "° F", displayed: false)
