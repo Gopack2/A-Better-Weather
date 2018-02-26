@@ -101,7 +101,7 @@ metadata {
     tiles {
   		multiAttributeTile(name:"temperature", type:"generic", width:1, height:1, canChangeIcon: false) {
 	       	tileAttribute("device.temperature", key: "PRIMARY_CONTROL") {
-                attributeState("temperature",label:'${currentValue}°' ,
+                attributeState("temperature" ,label:'${currentValue}°',
 					backgroundColors:[
 					[value: 32, color: "#153591"],
 					[value: 44, color: "#1e9cbb"],
@@ -256,16 +256,16 @@ metadata {
             ]
         }
   standardTile("location1", "device.location1", width: 2, height: 2,  inactiveLabel: false, decoration: "flat") {
-			state "${location1Name} active", action: "location1Zip", label:'${currentValue}', icon:"https://github.com/Gopack2/A-Better-Weather/blob/master/Lighthouse%20Active.png?raw=true"
-          	state "${location1Name}\n inactive", action:"location1Zip",label: "Loc 1", icon:"https://github.com/Gopack2/A-Better-Weather/blob/master/Lighthouse%20Inactive.png?raw=true"
+			state "${location1Name}", action: "location1Zip", label:'${currentValue}', icon:"https://github.com/Gopack2/A-Better-Weather/blob/master/Lighthouse%20Active.png?raw=true"
+          	//state "${location1Name}\n inactive", action:"location1Zip",label: "Loc 1", icon:"https://github.com/Gopack2/A-Better-Weather/blob/master/Lighthouse%20Inactive.png?raw=true"
 	    }
 		standardTile("location2", "device.location2", width: 2, height: 2,inactiveLabel: false,decoration: "flat" ) {
-			state "active", label:"Loc 2", action:"location2Zip", icon:"https://github.com/Gopack2/A-Better-Weather/blob/master/Cabin%20Active.png?raw=true"
-			state "inactive", label:"Loc 2", action:"location2Zip", icon:"https://github.com/Gopack2/A-Better-Weather/blob/master/Cabin%20Inactive.png?raw=true"
+			state "${location2Name}", action:"location2Zip", label:'${currentValue}',  icon:"https://github.com/Gopack2/A-Better-Weather/blob/master/Cabin%20Active.png?raw=true"
+			//state "inactive", label:"Loc 2", action:"location2Zip", icon:"https://github.com/Gopack2/A-Better-Weather/blob/master/Cabin%20Inactive.png?raw=true"
             }        
 		standardTile("location3", "device.location3", width: 2, height: 2,inactiveLabel: false,decoration: "flat") {
-			state "active", label:"Loc 3", action:"location3Zip", icon:"https://github.com/Gopack2/A-Better-Weather/blob/master/Arizona%20Active.png?raw=true"
-			state "inactive", label:"Loc 3", action:"location3Zip", icon:"https://github.com/Gopack2/A-Better-Weather/blob/master/Arizona%20Inactiuve.png?raw=true"
+			state "${location3Name}", action:"location3Zip", label:'${currentValue}',  icon:"https://github.com/Gopack2/A-Better-Weather/blob/master/Arizona%20Active.png?raw=true"
+			//state "inactive", label:"Loc 3", action:"location3Zip", icon:"https://github.com/Gopack2/A-Better-Weather/blob/master/Arizona%20Inactiuve.png?raw=true"
         }   
         valueTile("forecast", "device.Forecast0", width: 6, height: 6, canChangeBackground: true) {
  		state "longitude", label: '${currentValue}'
@@ -298,33 +298,38 @@ def updated() {
 	log.debug "UPDATED!"
     //unschedule()
     sendEvent("name":"Zip","value":location1Zip)
+    
+    
+    
 	poll()
-   	runEvery15Minutes(poll)
+  // 	runEvery15Minutes(poll)
 }
 // My City Button Controls
 def location1Zip() {
     sendEvent(name: "city", "value":location1Name)   
     sendEvent(name:"Zip","value":location1Zip)
-    sendEvent(name:"location3",value:"${location2Name}\n inactive")
- 	sendEvent(name:"location2",value:"${location3Name}\n inactive")
-	sendEvent(name:"location1",value:"${location1Name}\n active")
+    sendEvent(name:"location3",value:"${location2Name} inactive")
+ 	sendEvent(name:"location2",value:"${location3Name} inactive")
+	sendEvent(name:"location1",value:"${location1Name} active https://github.com/Gopack2/A-Better-Weather/blob/master/Cabin%20Inactive.png?raw=true  ")
+    
     poll()
 }
 def location2Zip() {
-    sendEvent(name: "city", value:"location2Zip")
+    sendEvent(name: "city", value:location2Name)
     sendEvent(name:"Zip","value":location2Zip)
-    sendEvent(name:"location3",value:"${location3Name}\n inactive")
- 	sendEvent(name:"location1",value:"${location1Name}\n inactive")
-	sendEvent(name:"location2",value:"${location2Name}\n active")
+    sendEvent(name:"location3",value:"${location3Name} inactive")
+ 	sendEvent(name:"location1",value:"${location1Name} inactive")
+	sendEvent(name:"location2",icon:"${location2Name} active")
    
    poll()
 }
 def location3Zip() {
-    sendEvent(name: "city", value: "location3Zip")
+    sendEvent(name: "city", value: location3Name)
     sendEvent(name:"Zip","value":location3Zip)
-    sendEvent(name:"location2",value:"${location2Name}\n inactive")
-    sendEvent(name:"location1",value:"${location1Name}\n inactive")
-    sendEvent(name:"location3",value:"${location3Name}\n active")
+    sendEvent(name:"location2",value:"${location2Name} inactive")
+    sendEvent(name:"location1",value:"${location1Name} inactive")
+    sendEvent(name:"location3",value:"${location3Name} active")
+    
   	poll()
 }
 // handle commands
@@ -383,9 +388,9 @@ def clearAttributeStates() {
 
 def poll() {
     log.debug "WUSTATION: Executing 'poll', location: ${location.name}"
-    
-    
-    
+    sendEvent(name:"location1",value:"${location1Name} \n active")
+    sendEvent(name:"location2",value:"${location2Name} \n active")
+    sendEvent(name:"location3",value:"${location3Name} \n active")
     
     
     
@@ -683,7 +688,7 @@ private localDate(timeZone) {
 }
 
 private send(map) {
-    log.debug "WUSTATION: event: $map"
+    //log.debug "WUSTATION: event: $map"
     sendEvent(map)
     
 }
