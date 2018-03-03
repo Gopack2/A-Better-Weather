@@ -26,6 +26,18 @@ metadata {
         capability "Sensor"
         capability "Polling"
 		
+        attribute "almanacNormalTempHigh", "string"
+        attribute "almanacNormalTempHighRecord", "string"
+        attribute "almanacNormalTempHighRecordYear", "string"
+        attribute "almanacNormalTempLow", "string"
+        attribute "almanacNormalTempLowRecordYear", "string"
+        attribute "almanacNormalTempLowRecord", "string"
+        attribute "almanacAirportCode", "string"
+        
+        
+        
+        
+        
         attribute "alert", "string"
         //attribute "alertIcon","string"
         attribute "alertKeys", "string"
@@ -75,6 +87,41 @@ metadata {
 		attribute "winddirection_deg", "string"
         attribute "windinfo", "string"
 		attribute "windString", "string"
+        attribute "yesterdayFog", "string"
+		attribute "yesterdayRain", "string"
+        attribute "yesterdaySnow", "string"
+		attribute "yesterdaySnowfall", "string"
+         attribute "yesterdayHail", "string"
+		attribute "yesterdayThunder", "string"
+        attribute "yesterdayTornado", "string"
+		attribute "yesterdayAvgTemp", "string"
+        attribute "yesterdayAvgDewpt", "string"
+		attribute "yesterdayAvgPressure", "string"
+        attribute "yesterdayAvgWinSspd", "string"
+		attribute "yesterdayAvgWindDird", "string"
+        attribute "yesterdayAvgVis", "string"
+		attribute "yesterdayMaxHumidity", "string"
+        attribute "yesterdayMinHumidity", "string"
+        attribute "yesterdayMaxTemp", "string"
+		attribute "yesterdayMinTemp", "string"
+        attribute "yesterdayMaxDewPt", "string"
+		attribute "yesterdayMinDewPt", "string"
+        attribute "yesterdayMaxPressure", "string"
+		attribute "yesterdayMinPressure", "string"
+        attribute "yesterdayMaxWindSpd", "string"
+		attribute "yesterdayMinWindSpd", "string"
+        attribute "yesterdayMaxVis", "string"
+		attribute "yesterdayMinVis", "string"
+        attribute "yesterdayPrecip", "string"
+		attribute "yesterdayHeatingDegreeDays", "string"
+        attribute "yesterdayCoolingDegreeDays", "string"
+        attribute "yesterdayMonthToDateCoolingDegreeDays", "string"
+        
+        
+        
+        
+        
+        
         attribute "Zip","string"
          
         command "location1Zip"
@@ -87,11 +134,14 @@ metadata {
     preferences {
         input name: "location1Zip", type: "number", title: "Zip Code", description: "Enter a Zipcode For Location", required: true
         input name: "location1Name", type: "string", title: "Name Of Location", description: "Enter a Name For Your Zipcode", required: true
+        input name: "location1Icon", type: "string", title: "Graphic For Weather Forecast", description: "Enter A URL To Your Graphic For Location 1", required:false
  		input name: "location2Zip", type: "number", title: "Zip Code", description: "Enter a Zipcode For Location", required: true
         input name: "location2Name", type: "string", title: "Name Of Location", description: "Enter a Name For Your Zipcode", required: true
-		input name: "location3Zip", type: "number", title: "Zip Code", description: "Enter a Zipcode For Location", required: true
+		input name: "location2Icon", type: "string", title: "Graphic For Weather Forecast", description: "Enter A URL To Your Graphic For Location 1", required:false
+ 		input name: "location3Zip", type: "number", title: "Zip Code", description: "Enter a Zipcode For Location", required: true
         input name: "location3Name", type: "string", title: "Name Of Location", description: "Enter a Name For Your Zipcode", required: true
-        input ("measUnits", "enum", title: "Measuerment units", required: false, 
+        input name: "location3Icon", type: "string", title: "Graphic For Weather Forecast", description: "Enter A URL To Your Graphic For Location 1", required:false
+ 		input ("measUnits", "enum", title: "Measuerment units", required: false, 
 			options: [ "imperial":"Imperial", "metric":"Metric" ])
     	input ("timeFormat", "enum", title: "Time Format", required: false, 
 			options: [ "12Hour":"12 Hour Format, i.e. 01:00 PM", "24Hour":"24 Hour Format, i.e. 13:00 PM" ])
@@ -186,25 +236,28 @@ metadata {
             state "default", label: "", action: "refresh", icon:"st.secondary.refresh"
         }
         standardTile("alert", "device.alert", inactiveLabel: false, width: 5, height: 2, decoration: "flat", wordWrap: true) {
-      		state "[null]",icon:"https://github.com/Gopack2/A-Better-Weather/blob/master/Default.png?raw=true", label:'\n${currentValue}'
-     		state "[WIN]",icon:"https://github.com/Gopack2/A-Better-Weather/blob/master/WIN.png?raw=true"
-     		state "[TOR]",icon:"https://github.com/Gopack2/A-Better-Weather/blob/master/TOR.png?raw=true"
-       		state "[TOW]",icon:"https://github.com/Gopack2/A-Better-Weather/blob/master/TOW.png?raw=true"
-      		state "[WRN]",icon:"https://github.com/Gopack2/A-Better-Weather/blob/master/WRN.png?raw=true"
-       		state "[SEW]",icon:"https://github.com/Gopack2/A-Better-Weather/blob/master/SEW.png?raw=true"
-     		state "[FLO]",icon:"https://github.com/Gopack2/A-Better-Weather/blob/master/FLO.png?raw=true"
-      		state "[WAT]",icon:"https://github.com/Gopack2/A-Better-Weather/blob/master/WAT.png?raw=true"
-    		state "[WND]",icon:"https://github.com/Gopack2/A-Better-Weather/blob/master/WND.png?raw=true"
-       		state "[SVR]",icon:"https://github.com/Gopack2/A-Better-Weather/blob/master/SVR.png?raw=true"
-    		state "[HEA]",icon:"https://github.com/Gopack2/A-Better-Weather/blob/master/HEA.png?raw=true"
-     		state "[FOG]",icon:"https://github.com/Gopack2/A-Better-Weather/blob/master/FOG.png?raw=true"
-    		state "[SPE]",icon:"https://github.com/Gopack2/A-Better-Weather/blob/master/SPE.png?raw=true"     
-    		state "[FIR]",icon:"https://github.com/Gopack2/A-Better-Weather/blob/master/FIR.png?raw=true"
-    	    state "[VOL]",icon:"https://github.com/Gopack2/A-Better-Weather/blob/master/VOL.png?raw=true"
-       		state "[HWW]",icon:"https://github.com/Gopack2/A-Better-Weather/blob/master/HWW.png?raw=true"
-       		state "[REC]",icon:"https://github.com/Gopack2/A-Better-Weather/blob/master/REC.png?raw=true"
-       		state "[REP]",icon:"https://github.com/Gopack2/A-Better-Weather/blob/master/REP.png?raw=true"
-       		state "[PUB]",icon:"https://github.com/Gopack2/A-Better-Weather/blob/master/PUB.png?raw=true"
+      		state "[null]",icon:"https://github.com/Gopack2/A-Better-Weather/raw/master/Default.png"
+     		state "[WIN]",icon:"https://github.com/Gopack2/A-Better-Weather/raw/master/WIN.png"
+     		state "[TOR]",icon:"https://github.com/Gopack2/A-Better-Weather/raw/master/TOR.png"
+       		state "[TOW]",icon:"https://github.com/Gopack2/A-Better-Weather/raw/master/TOW.png"
+      		state "[WRN]",icon:"https://github.com/Gopack2/A-Better-Weather/raw/master/WRN.png"
+       		state "[SEW]",icon:"https://github.com/Gopack2/A-Better-Weather/raw/master/SEW.png"
+     		state "[FLO]",icon:"https://github.com/Gopack2/A-Better-Weather/raw/master/FLO.png"
+      		state "[WAT]",icon:"https://github.com/Gopack2/A-Better-Weather/raw/master/WAT.png"
+    		state "[WND]",icon:"https://github.com/Gopack2/A-Better-Weather/raw/master/WND.png"
+       		state "[SVR]",icon:"https://github.com/Gopack2/A-Better-Weather/raw/master/SVR.png"
+    		state "[HEA]",icon:"https://github.com/Gopack2/A-Better-Weather/raw/master/HEA.png"
+     		state "[FOG]",icon:"https://github.com/Gopack2/A-Better-Weather/raw/master/FOG.png"
+    		state "[SPE]",icon:"https://github.com/Gopack2/A-Better-Weather/raw/master/SPE.png"     
+    		state "[FIR]",icon:"https://github.com/Gopack2/A-Better-Weather/raw/master/FIR.png"
+    	    state "[VOL]",icon:"https://github.com/Gopack2/A-Better-Weather/raw/master/VOL.png"
+       		state "[HWW]",icon:"https://github.com/Gopack2/A-Better-Weather/raw/master/HWW.png"
+       		state "[REC]",icon:"https://github.com/Gopack2/A-Better-Weather/raw/master/REC.png"
+       		state "[REP]",icon:"https://github.com/Gopack2/A-Better-Weather/raw/master/REP.png"
+       		state "[PUB]",icon:"https://github.com/Gopack2/A-Better-Weather/raw/master/PUB.png"
+       }
+       standardTile("ForecastGraphic", "device.ForecastGraphic", inactiveLabel: false, width: 4, height: 2, decoration: "flat", wordWrap: true) {
+       	state "[null]",icon:"https://www.theweather.com/wimages/fotoba7037436d671b4cbf1465324d987c6b.png"
        }
         valueTile("alertMessage", "device.alertMessage", inactiveLabel: false, width: 6, height: 6, decoration: "flat", wordWrap: true) {
             state "default", label:'Weather Alert Message :\n ${currentValue}'
@@ -256,7 +309,7 @@ metadata {
             ]
         }
   standardTile("location1", "device.location1", width: 2, height: 2,  inactiveLabel: false, decoration: "flat") {
-			state "${location1Name}", action: "location1Zip", label:'${currentValue}', icon:"https://github.com/Gopack2/A-Better-Weather/blob/master/Lighthouse%20Active.png?raw=true"
+			state "${location1Name} ", action: "location1Zip", label:'${currentValue}', icon:"https://github.com/Gopack2/A-Better-Weather/blob/master/Lighthouse%20Active.png?raw=true"
           	//state "${location1Name}\n inactive", action:"location1Zip",label: "Loc 1", icon:"https://github.com/Gopack2/A-Better-Weather/blob/master/Lighthouse%20Inactive.png?raw=true"
 	    }
 		standardTile("location2", "device.location2", width: 2, height: 2,inactiveLabel: false,decoration: "flat" ) {
@@ -267,13 +320,7 @@ metadata {
 			state "${location3Name}", action:"location3Zip", label:'${currentValue}',  icon:"https://github.com/Gopack2/A-Better-Weather/blob/master/Arizona%20Active.png?raw=true"
 			//state "inactive", label:"Loc 3", action:"location3Zip", icon:"https://github.com/Gopack2/A-Better-Weather/blob/master/Arizona%20Inactiuve.png?raw=true"
         }   
-        valueTile("forecast", "device.Forecast0", width: 6, height: 6, canChangeBackground: true) {
- 		state "longitude", label: '${currentValue}'
- 		}
-		
-        valueTile("forecast", "device.Forecast0", width: 6, height: 6, canChangeBackground: true) {
- 		state "longitude", label: '${currentValue}'
- 		}
+        
     main(["temperature2"])
 	      details(["alert", "location1","location2","location3","temperature", "feelslike","weatherIcon","weather"
         	, "humidity" , "dewpoint", "windinfo", "pressure", "solarradiation", "uv_index", 
@@ -308,99 +355,44 @@ def updated() {
 def location1Zip() {
     sendEvent(name: "city", "value":location1Name)   
     sendEvent(name:"Zip","value":location1Zip)
-    sendEvent(name:"location3",value:"${location2Name} inactive")
- 	sendEvent(name:"location2",value:"${location3Name} inactive")
-	sendEvent(name:"location1",value:"${location1Name} active https://github.com/Gopack2/A-Better-Weather/blob/master/Cabin%20Inactive.png?raw=true  ")
+    sendEvent(name:"location3",value:"${location3Name} \ninactive")
+ 	sendEvent(name:"location2",value:"${location2Name} \ninactive")
+	sendEvent(name:"location1",value:"${location1Name} \nactive")
     
     poll()
 }
 def location2Zip() {
     sendEvent(name: "city", value:location2Name)
     sendEvent(name:"Zip","value":location2Zip)
-    sendEvent(name:"location3",value:"${location3Name} inactive")
- 	sendEvent(name:"location1",value:"${location1Name} inactive")
-	sendEvent(name:"location2",icon:"${location2Name} active")
-   
+    sendEvent(name:"location3",value:"${location3Name} \ninactive")
+ 	sendEvent(name:"location1",value:"${location1Name} \ninactive")
+	sendEvent(name:"location2",value:"${location2Name} \nactive")
+  
    poll()
 }
 def location3Zip() {
     sendEvent(name: "city", value: location3Name)
     sendEvent(name:"Zip","value":location3Zip)
-    sendEvent(name:"location2",value:"${location2Name} inactive")
-    sendEvent(name:"location1",value:"${location1Name} inactive")
-    sendEvent(name:"location3",value:"${location3Name} active")
+    sendEvent(name:"location2",value:"${location2Name} \ninactive")
+    sendEvent(name:"location1",value:"${location1Name} \ninactive")
+    sendEvent(name:"location3",value:"${location3Name} \nactive")
     
   	poll()
 }
 // handle commands
-def clearAttributeStates() {
-		send(name: "observationTime",value:"", displayed: false)
-		send(name: "observationEpoch",value:"", displayed: false)
-        send(name: "weather", value:"", displayed: false)
-		send(name: "tempString",value:"", displayed: false)
-		send(name: "windString", value:"", displayed: false)
-        send(name: "winddirection", value:"", displayed: false)
-        send(name: "alertIcon", value:"", displayed: false)
-        send(name: "wind_gust", value:"", displayed: false)
-        send(name: "wind", value:"", displayed: false)
-		send(name: "winddirection_deg", value:"", displayed: false)
-        send(name: "windinfo", value:"", displayed: false)
-		send(name: "pressureTrend", value:"", displayed: false)
-   	 	send(name: "pressure", value:"", displayed: false) 
- 		send(name: "dewPoint",value:"", displayed: false)
-        send(name: "heatIndex",value:"", displayed: false)
-        send(name: "windChill",value:"", displayed: false)
-        send(name: "feelsLike", value:"", displayed: false)
-        send(name: "visibility", value:"", displayed: false)
-        send(name: "solarradiation", value:"", displayed: false)
-        send(name: "uv_index", value:"", displayed: false)
-		send(name: "precipLastHourString",value:"", displayed: false)
-		send(name: "precipTodayString",value:"", displayed: false)
-		send(name: "precipToday",value:"", displayed: false)
-	    send(name: "precipLastHour", value:"", displayed: false)
-		send(name: "fullLocation", value:"", displayed: false)
-    	send(name: "city", value:"", displayed: false)
-     	send(name: "state", value:"", displayed: false)
-        send(name: "country", value:"", displayed: false)
-        send(name: "Monday", value:"", displayed: false)
-//	observation_location               
-     	send(name: "latitude", value:"", displayed: false)
-     	send(name: "longitude", value:"", displayed: false)
-     	send(name: "elevation", value:"", displayed: false)       
-	    send(name: "localSunrise", value:"", displayed: false)
-        send(name: "localSunset", value:"", displayed: false)
-        send(name: "timeZoneOffset", value:"", displayed: false)
-        send(name: "water", value:"", displayed: false)
-        send(name: "weatherIcon", value:"", displayed: false)
-        send(name: "forecastIcon", value:"", displayed: false)
-// Alerts Atrributes
-        send(name: "alertMessage",value:"", displayed: false)
-        send(name: "sunriseDate", value:"", displayed: false)
-        send(name: "sunsetDate", value:"", displayed: false)
-// Forecast attributes
-        send(name: "Monday",value:"", displayed: false)
-        send(name: "Wednesday",value:"", displayed: false)
-        send(name: "Thursday",value:"", displayed: false)
-        send(name: "Friday",value:"", displayed: false)
-        send(name: "Saturday",value:"", displayed: false)
-        send(name: "Sunday",value:"", displayed: false)
-}
+
 
 def poll() {
     log.debug "WUSTATION: Executing 'poll', location: ${location.name}"
-    sendEvent(name:"location1",value:"${location1Name} \n active")
-    sendEvent(name:"location2",value:"${location2Name} \n active")
-    sendEvent(name:"location3",value:"${location3Name} \n active")
-    
     
     
    clearAttributeStates
 // clear attributes
-clearAttributeStates()
+//clearAttributeStates()
     // Current conditions
     def obs = get("conditions")?.current_observation
     if (obs) {
-//   		log.debug "obs --> ${obs}"
+  		//log.debug "obs --> ${obs}"
         def now = new Date().format('M/d/yyyy h:mm a ',location.timeZone)
         sendEvent(name:"lastSTupdate", value: now, displayed: false)
         
@@ -501,7 +493,8 @@ if (measUnits) {
                 send(name: "wind", value: "${obs.wind_mph} mph", displayed: false)
                 
             }
-        } else {
+        } 
+        else {
             	send(name: "temperature", value: Math.round(obs.temp_f), unit: "° F", displayed: false)
             	send(name: "feelsLike", value: Math.round(obs.feelslike_f as Double), unit: "° F", displayed: false)
             	send(name: "dewPoint", value: Math.round(obs.dewpoint_f as Double), unit: "° F", displayed: false)
@@ -551,9 +544,7 @@ if (measUnits) {
         
         // Sunrise / sunset
         def astro = get("astronomy")?.moon_phase
-     
-       //working on this */
-   switch (timeFormat) {
+        switch (timeFormat) {
         case "12Hour" :
         send(name: "localSunset", value: Date.parse("HH:mm","${astro.sunset.hour}:${astro.sunset.minute}").format( 'h:mm a ' ), displayed: false)
      	send(name: "localSunrise", value: Date.parse("HH:mm","${astro.sunrise.hour}:${astro.sunrise.minute}").format( 'h:mm a' ), displayed: false)
@@ -611,9 +602,124 @@ if (measUnits) {
         else {
             log.warn "Forecast not found"
         }
+// yesterday information
+	def yesterday = get("yesterday")?.history
+    if (yesterday) {
+    	send(name:"yesterdayFog", value:"${yesterday.dailysummary[0].fog}")
+       	send(name:"yesterdayRain", value:"${yesterday.dailysummary[0].rain}")
+       	send(name:"yesterdaySnow", value:"${yesterday.dailysummary[0].snow}")
+       	send(name:"yesterdayHail", value:"${yesterday.dailysummary[0].hail}")
+       	send(name:"yesterdayThunder", value:"${yesterday.dailysummary[0].thunder}")
+       	send(name:"yesterdayTornado", value:"${yesterday.dailysummary[0].tornado}")
+       	send(name:"yesterdayAvgWindDird", value:"${yesterday.dailysummary[0].meanwindird}")
+       	send(name:"yesterdayMaxHumidity", value:"${yesterday.dailysummary[0].maxhumidity}")
+       	send(name:"yesterdayMinHumidity", value:"${yesterday.dailysummary[0].minhumidity}")
+       	send(name:"yesterdayGDegreeDays", value:"${yesterday.dailysummary[0].gdegreedays}")
+       	send(name:"yesterdayHeatingDegreeDays", value:"${yesterday.dailysummary[0].heatingdegreedays}")
+      	send(name:"yesterdayCoolingDegreeDays", value:"${yesterday.dailysummary[0].coolingdegreedays}")
+       	send(name:"yesterdayMonthToDateHeatingDegreeDays", value:"${yesterday.dailysummary[0].monthtodateheatingdegreedays}")
+       	send(name:"yesterdayMonthToDateHeatingDegreeDaysNormal", value:"${yesterday.dailysummary[0].monthtodateheatingdegreedaysnormal}")
+	switch (measUnits) {
+        case "imperial" :
+        	send(name:"yesterdaySnowFall", value:"${yesterday.dailysummary[0].snowfalli}")
+            send(name:"yesterdayAvgTemp", value:"${yesterday.dailysummary[0].meantempi}")
+            send(name:"yesterdayAvgDewPt", value:"${yesterday.dailysummary[0].meandewpti}")
+            send(name:"yesterdayAvgPressure", value:"${yesterday.dailysummary[0].meanpressurei}")
+            send(name:"yesterdayAvgWindSpd", value:"${yesterday.dailysummary[0].meanwindspdi}")
+            send(name:"yesterdayAvgVis", value:"${yesterday.dailysummary[0].meanvisi}")
+            send(name:"yesterdayMaxTemp", value:"${yesterday.dailysummary[0].maxtempi}")
+            send(name:"yesterdayMinTemp", value:"${yesterday.dailysummary[0].mintempi}")
+            send(name:"yesterdayAvgPressure", value:"${yesterday.dailysummary[0].meanpressurei}")
+            send(name:"yesterdayMaxDewPt", value:"${yesterday.dailysummary[0].maxdewpti}")
+            send(name:"yesterdayMinDewPt", value:"${yesterday.dailysummary[0].mindewpti}")
+            send(name:"yesterdayMaxPressure", value:"${yesterday.dailysummary[0].maxpressurei}")
+            send(name:"yesterdayMinPressure", value:"${yesterday.dailysummary[0].minpressurei}")
+            send(name:"yesterdayMaxWindSpd", value:"${yesterday.dailysummary[0].maxwspdi}")
+            send(name:"yesterdayMinWindSpd", value:"${yesterday.dailysummary[0].minwspdi}")
+            send(name:"yesterdayMaxVis", value:"${yesterday.dailysummary[0].maxvisi}")
+            send(name:"yesterdayMinVis", value:"${yesterday.dailysummary[0].minvisi}") 
+            send(name:"yesterdayPrecip", value:"${yesterday.dailysummary[0].precipi}")       
+    	break;
+        case "metric":
+   			send(name:"yesterdaySnowFall", value:"${yesterday.dailysummary[0].snowfallm}")
+   			send(name:"yesterdayAvgTemp", value:"${yesterday.dailysummary[0].meantempm}")
+    		send(name:"yesterdayAvgDewPt", value:"${yesterday.dailysummary[0].meandewptm}")
+   			send(name:"yesterdayAvgPressure", value:"${yesterday.dailysummary[0].meanpressurem}")
+   			send(name:"yesterdayAvgWindSpd", value:"${yesterday.dailysummary[0].meanwindspdm}")
+   			send(name:"yesterdayAvgVis", value:"${yesterday.dailysummary[0].meanvism}")
+   			send(name:"yesterdayMaxTemp", value:"${yesterday.dailysummary[0].maxtempm}")
+   			send(name:"yesterdayMinTemp", value:"${yesterday.dailysummary[0].mintempm}")
+   			send(name:"yesterdayAvgPressure", value:"${yesterday.dailysummary[0].meanpressurem}")
+    		send(name:"yesterdayMaxDewPt", value:"${yesterday.dailysummary[0].maxdewptm}")
+   			send(name:"yesterdayMinDewPt", value:"${yesterday.dailysummary[0].mindewptm}")
+   			send(name:"yesterdayMaxPressure", value:"${yesterday.dailysummary[0].maxpressurem}")
+   			send(name:"yesterdayMinPressure", value:"${yesterday.dailysummary[0].minpressurem}")
+   			send(name:"yesterdayMaxWindSpd", value:"${yesterday.dailysummary[0].maxwspdm}")
+   			send(name:"yesterdayMinWindSpd", value:"${yesterday.dailysummary[0].minwspdm}")
+   			send(name:"yesterdayMaxVis", value:"${yesterday.dailysummary[0].maxvism}")
+   			send(name:"yesterdayMinVis", value:"${yesterday.dailysummary[0].minvism}")
+     		send(name:"yesterdayPrecip", value:"${yesterday.dailysummary[0].precipm}")        
+    	break;
+        default:
+         	send(name:"yesterdaySnowFall", value:"${yesterday.dailysummary[0].snowfalli}")
+   			send(name:"yesterdayAvgTemp", value:"${yesterday.dailysummary[0].meantempi}")
+    		send(name:"yesterdayAvgDewPt", value:"${yesterday.dailysummary[0].meandewpti}")
+   			send(name:"yesterdayAvgPressure", value:"${yesterday.dailysummary[0].meanpressurei}")
+   			send(name:"yesterdayAvgWindSpd", value:"${yesterday.dailysummary[0].meanwindspdi}")
+   			send(name:"yesterdayAvgVis", value:"${yesterday.dailysummary[0].meanvisi}")
+   			send(name:"yesterdayMaxTemp", value:"${yesterday.dailysummary[0].maxtempi}")
+   			send(name:"yesterdayMinTemp", value:"${yesterday.dailysummary[0].mintempi}")
+   			send(name:"yesterdayAvgPressure", value:"${yesterday.dailysummary[0].meanpressurei}")
+    		send(name:"yesterdayMaxDewPt", value:"${yesterday.dailysummary[0].maxdewpti}")
+   			send(name:"yesterdayMinDewPt", value:"${yesterday.dailysummary[0].mindewpti}")
+   			send(name:"yesterdayMaxPressure", value:"${yesterday.dailysummary[0].maxpressurei}")
+   			send(name:"yesterdayMinPressure", value:"${yesterday.dailysummary[0].minpressurei}")
+   			send(name:"yesterdayMaxWindSpd", value:"${yesterday.dailysummary[0].maxwspdi}")
+   			send(name:"yesterdayMinWindSpd", value:"${yesterday.dailysummary[0].minwspdi}")
+   			send(name:"yesterdayMaxVis", value:"${yesterday.dailysummary[0].maxvisi}")
+   			send(name:"yesterdayMinVis", value:"${yesterday.dailysummary[0].minvisi}")
+     		send(name:"yesterdayPrecip", value:"${yesterday.dailysummary[0].precipi}")        
+        }
+    }
+     
+// Almanac
+def almanac = get("almanac")?.almanac
+	
+    if(almanac) {
+    send(name:"almanacAirportCode", value:"${almanac.airport_code}")
+    log.debug"almanac airport code ---> "
+    switch (measUnits) {
+        case "imperial" :
+        	send(name:"almanacNormalTempHigh", value:"${almanac.temp_high.normal.F}")
+       send(name:"almanacNormalTempHighRecord", value:"${almanac.temp_high.record.F}")
+        send(name:"almanacNormalTempHighRecordYear", value:"${almanac.temp_high.recordyear}")
+        send(name:"almanacNormalTempLow", value:"${almanac.temp_low.normal.F}")
+        send(name:"almanacNormalTempLowRecord", value:"${almanac.temp_low.record.F}")
+       send(name:"almanacNormalTempLowRecordYear", value:"${almanac.temp_low.recordyear}")
+        break;
+        case "metric":
+   			send(name:"almanacNormalTempHigh", value:"${almanac.temp_high.normal.C}")
+       send(name:"almanacNormalTempHighRecord", value:"${almanac.temp_high.record.C}")
+        send(name:"almanacNormalTempHighRecordYear", value:"${almanac.temp_high.recordyear}")
+        send(name:"almanacNormalTempLow", value:"${almanac.temp_low.normal.C}")
+        send(name:"almanacNormalTempLowRecord", value:"${almanac.temp_low.record.C}")
+       send(name:"almanacNormalTempLowRecordYear", value:"${almanac.temp_low.recordyear}")
+    	break;
+        default:
+         	send(name:"almanacNormalTempHigh", value:"${almanac.temp_high.normal.F}")
+       send(name:"almanacNormalTempHighRecord", value:"${almanac.temp_high.record.F}")
+        send(name:"almanacNormalTempHighRecordYear", value:"${almanac.temp_high.recordyear}")
+        send(name:"almanacNormalTempLow", value:"${almanac.temp_low.normal.F}")
+        send(name:"almanacNormalTempLowRecord", value:"${almanac.temp_low.record.F}")
+       send(name:"almanacNormalTempLowRecordYear", value:"${almanac.temp_low.recordyear}")
+   			      
+        }
+   }
+    
+    
  // Alerts
-        def alerts = get("alerts")?.alerts
-        def alertType = "[${alerts?.type[0]}]"
+        def alerts = get("alerts")?.alerts      
+       def alertType = "[${alerts?.type[0]}]"
         def newKeys = alerts?.collect{it.type + it.date_epoch} ?: []
         log.trace device.currentState("alertKeys")
         def oldKeys = device.currentState("alertKeys")?.jsonValue
@@ -667,17 +773,19 @@ private pad(String s, size = 25) {
         n.times {sb += " "}
         sb += s
         n.times {sb += " "}
-        return sb
+      return sb
+        
     }
     else {
-        return s
+      return s
+        
     }
 }
 
 
 private get(feature) {
  // this is what i need to fix  
-//    log.debug "device.currentState("alertKeys")"
+    //log.debug "device.currentState("alertKeys")"
     getWeatherFeature(feature,"${device.currentValue("Zip")}") 
 }
 
