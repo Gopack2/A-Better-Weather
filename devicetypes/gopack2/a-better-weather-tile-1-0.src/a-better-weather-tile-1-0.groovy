@@ -139,17 +139,18 @@ metadata {
         attribute "yesterdayCoolingDegreeDays", "string"
         attribute "yesterdayMonthToDateCoolingDegreeDays", "string"
         attribute "Zip","string"
+        
         command "loc1"
       	command "loc2"
       	command "loc3"
        	command "refresh"
     }
   	preferences {
-    	input name: "location1Zip", type: "number", title: "Enter A Zip Code For Location 1", description: "Enter a Zipcode For Location 1", required: false, defaultValue: "10001"
+    	input name: "location1Zip", type: "string", title: "Enter A Zip Code For Location 1", description: "Enter a Zipcode For Location 1", required: false, defaultValue: "10001"
   		input name: "location1Name", type: "string", title: "Enter A Name To Display For Location 1", description: "Enter a Name For Your Zipcode", required: false, defaultValue: "New York"
-     	input name: "location2Zip", type: "number", title: "Enter A Zip Code For Location 2", description: "Enter a Zipcode For Location 2", required: false, defaultValue: "60920"
+     	input name: "location2Zip", type: "string", title: "Enter A Zip Code For Location 2", description: "Enter a Zipcode For Location 2", required: false, defaultValue: "60920"
   		input name: "location2Name", type: "string", title: "Enter A Name To Display For Location 2", description: "Enter a Name For Your Zipcode", required: false, defaultValue: "Chicago"
-		input name: "location3Zip", type: "number", title: "Enter A Zip Code For Location 3", description: "Enter a Zipcode For Location 3", required: false, defaultValue: "90001"
+		input name: "location3Zip", type: "string", title: "Enter A Zip Code For Location 3", description: "Enter a Zipcode For Location 3", required: false, defaultValue: "90001"
         input name: "location3Name", type: "string", title: "Enter A Name To Display For Location 3", description: "Enter a Name For Your Zipcode", required: false, defaultValue: "Los Angeles"
         input ("measUnits", "enum", title: "Measuerment units", required: false, defaultValue:"metric",
 			options: [ "imperial":"Imperial", "metric":"Metric" ])
