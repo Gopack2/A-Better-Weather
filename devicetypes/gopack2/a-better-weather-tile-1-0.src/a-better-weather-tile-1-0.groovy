@@ -57,6 +57,7 @@ metadata {
         attribute "alertMessage","string"
   		attribute "city", "string"
        	attribute "country", "string"
+        attribute "defaultZip", "String"
  		attribute "dewPoint","string"
      	attribute "elevation", "string"       
         attribute "feelsLike", "string"
@@ -78,7 +79,8 @@ metadata {
 		attribute "fullLocation", "string"
         attribute "heatIndex","string"
      	attribute "latitude", "string"
- 		attribute "localSunrise", "string"
+ 		attribute "loc1Overide","enum"
+        attribute "localSunrise", "string"
         attribute "localSunset", "string"
         attribute "localMoonrise", "string"
         attribute "localMoonset", "string"
@@ -144,6 +146,8 @@ metadata {
       	command "loc2"
       	command "loc3"
        	command "refresh"
+        command "loc1ChangeDefaultZip"
+        command "loc1RestoreDefaultZip"
     }
   	preferences {
     	input name: "location1Zip", type: "string", title: "Enter A Zip Code For Location 1", description: "Enter a Zipcode For Location 1", required: false, defaultValue: "10001"
@@ -392,10 +396,24 @@ def installed() {
 def uninstalled() {
 	unschedule()
 	}
+def initialize() {
+    //log.debug" location 1 zip is $location1Zip"
+    //state.loc1ZipDefault = $settings.location1Zip
+    //state.loc1Overide = "true" 
+    }
 def updated() {
-	log.debug "UPDATED!"
+	log.debug" location 1 zip is $location1Zip"
+    log.debug "overide has been turned to $state.loc1Overide "
+    state.loc1Overide = "false"
+    state.defaultLocation1Zip = "location1Zip"
+    //log.debug "overide has been turned to $state.loc1Overide "
+    
+    log.debug "UPDATED!"
     //unschedule()
+    //sendEvent("name":"Zip","value":"")
     sendEvent("name":"Zip","value":location1Zip)
+    sendEvent("name":"defaultZip","value":location1Zip)
+    sendEvent("name":"loc1Overide","value":"false")
     sendEvent(name:"loc1Name",value:location1Name)
     sendEvent(name:"loc2Name",value:location2Name)
     sendEvent(name:"loc3Name",value:location3Name)
@@ -425,14 +443,42 @@ def updated() {
         	runEvery15Minutes(poll)
     	}
 	}
+def loc1ChangeDefaultZip (param1) {
+   	//sendEvent("name":"Zip", "value":param1)
+    state.mobileZip = param1
+    state.loc1Overide = "true"
+} 
+def loc1RestoreDefaultZip() {
+	sendEvent("name":"Zip", "value": location1Zip)
+    state.loc1Overide = "false"
+}
 // My City Button Controls
 def loc1() {
-	sendEvent(name: "city", "value":location1Name, displayed: false)   
-    sendEvent(name:"Zip","value":location1Zip, displayed: false)
-    sendEvent(name:"loc3",value:"inactive", displayed: false)
- 	sendEvent(name:"loc2",value:"inactive", displayed: false)
-	sendEvent(name:"loc1",value: "active" , displayed: false)
-    poll()
+	switch (state.loc1Overide) {
+    	case "false":
+            sendEvent(name: "city", "value":location1Name, displayed: false)   
+            sendEvent(name:"Zip","value":location1Zip, displayed: false)
+            sendEvent(name:"loc3",value:"inactive", displayed: false)
+            sendEvent(name:"loc2",value:"inactive", displayed: false)
+            sendEvent(name:"loc1",value: "active" , displayed: false)
+            poll()
+            break;
+    	case"true":
+            sendEvent(name: "city", "value":location1Name, displayed: false)   
+            sendEvent(name:"Zip","value": state.mobileZip , displayed: false)
+            sendEvent(name:"loc3",value:"inactive", displayed: false)
+            sendEvent(name:"loc2",value:"inactive", displayed: false)
+            sendEvent(name:"loc1",value: "active" , displayed: false)
+            poll()
+            break;
+        default :
+            sendEvent(name: "city", "value":location1Name, displayed: false)   
+            sendEvent(name:"Zip","value":location1Zip, displayed: false)
+            sendEvent(name:"loc3",value:"inactive", displayed: false)
+            sendEvent(name:"loc2",value:"inactive", displayed: false)
+            sendEvent(name:"loc1",value: "active" , displayed: false)
+            poll()
+    	}
 	}
 def loc2() {
 	sendEvent(name: "city", value:location2Name, displayed: false)
@@ -440,7 +486,8 @@ def loc2() {
     sendEvent(name:"loc3",value:"inactive", displayed: false)
  	sendEvent(name:"loc1",value:"inactive" , displayed: false)
 	sendEvent(name:"loc2",value:"active", displayed: false)
-  	 poll()
+  log.debug"yup"
+  poll()
 	}
 def loc3() {
    	sendEvent(name: "city", value: location3Name, displayed: false)
