@@ -27,7 +27,7 @@ To install manually:
   
   Now go to the device in the things section on the mobile device you are using.  
   1. Tap on the cog in the upper right corner.  
-  2. fill in the necessary preferences that you wish to customize.
+  2. Fill in the necessary preferences that you wish to customize.
   
   The device handler has defaults Preset up:
     1. Location names preset to New York, Chicago, and Los Angeles.
