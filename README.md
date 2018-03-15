@@ -31,4 +31,4 @@ Tap on the cog in the upper right corner.
     4. Time format is preset t9 12 hour format
     5. Refresh time (how often it gets weather) is set to run every 15 minutes     
     
-![stack Overflow](http://lmsotfy.com/so.png)
+![arizona](https://raw.githubusercontent.com/Gopack2/A-Better-Weather-Tile-1.0/master/Arizona%20Active.png)
