@@ -153,7 +153,7 @@ metadata {
   		input name: "location2Name", type: "string", title: "Enter A Name To Display For Location 2", description: "Enter a Name For Your Zipcode", required: false, defaultValue: "Chicago"
 		input name: "location3Zip", type: "string", title: "Enter A Zip Code For Location 3", description: "Enter a Zipcode For Location 3", required: false, defaultValue: "90001"
         input name: "location3Name", type: "string", title: "Enter A Name To Display For Location 3", description: "Enter a Name For Your Zipcode", required: false, defaultValue: "Los Angeles"
-        input ("measUnits", "enum", title: "Measuerment units", required: false, defaultValue:"metric",
+        input ("measUnits", "enum", title: "Measuerment units", required: false, defaultValue:"imperial",
 			options: [ "imperial":"Imperial", "metric":"Metric" ])
     	input ("timeFormat", "enum", title: "Time Format", required: false, defaultValue: "12Hour",
 			options: [ "12Hour":"12 Hour Format, i.e. 01:00 PM", "24Hour":"24 Hour Format, i.e. 13:00 PM" ])
@@ -274,25 +274,25 @@ metadata {
             state "default", label: "", action: "poll", icon:"st.secondary.refresh"
         }
         standardTile("alert", "device.alert", inactiveLabel: false, width: 4, height: 2, decoration: "flat", wordWrap: true) {
-      		state "[null]",icon:"https://github.com/Gopack2/A-Better-Weather/raw/master/Default.png"
-     		state "[WIN]",icon:"https://github.com/Gopack2/A-Better-Weather/raw/master/WIN.png"
-     		state "[TOR]",icon:"https://github.com/Gopack2/A-Better-Weather/raw/master/TOR.png"
-       		state "[TOW]",icon:"https://github.com/Gopack2/A-Better-Weather/raw/master/TOW.png"
-      		state "[WRN]",icon:"https://github.com/Gopack2/A-Better-Weather/raw/master/WRN.png"
-       		state "[SEW]",icon:"https://github.com/Gopack2/A-Better-Weather/raw/master/SEW.png"
-     		state "[FLO]",icon:"https://github.com/Gopack2/A-Better-Weather/raw/master/FLO.png"
-      		state "[WAT]",icon:"https://github.com/Gopack2/A-Better-Weather/raw/master/WAT.png"
-    		state "[WND]",icon:"https://github.com/Gopack2/A-Better-Weather/raw/master/WND.png"
-       		state "[SVR]",icon:"https://github.com/Gopack2/A-Better-Weather/raw/master/SVR.png"
-    		state "[HEA]",icon:"https://github.com/Gopack2/A-Better-Weather/raw/master/HEA.png"
-     		state "[FOG]",icon:"https://github.com/Gopack2/A-Better-Weather/raw/master/FOG.png"
-    		state "[SPE]",icon:"https://github.com/Gopack2/A-Better-Weather/raw/master/SPE.png"     
-    		state "[FIR]",icon:"https://github.com/Gopack2/A-Better-Weather/raw/master/FIR.png"
-    	    state "[VOL]",icon:"https://github.com/Gopack2/A-Better-Weather/raw/master/VOL.png"
-       		state "[HWW]",icon:"https://github.com/Gopack2/A-Better-Weather/raw/master/HWW.png"
-       		state "[REC]",icon:"https://github.com/Gopack2/A-Better-Weather/raw/master/REC.png"
-       		state "[REP]",icon:"https://github.com/Gopack2/A-Better-Weather/raw/master/REP.png"
-       		state "[PUB]",icon:"https://github.com/Gopack2/A-Better-Weather/raw/master/PUB.png"
+      		state "[null]",icon:"https://raw.github.com/Gopack2/A-Better-Weather-Tile-1.0/master/Alert%20Icons/Default.png"
+     		state "[WIN]",icon:"https://raw.githubusercontent.com/Gopack2/A-Better-Weather-Tile-1.0/master/Alert%20Icons/WIN.png"
+     		state "[TOR]",icon:"https://raw.githubusercontent.com/Gopack2/A-Better-Weather-Tile-1.0/master/Alert%20Icons/TOR.png"
+       		state "[TOW]",icon:"https://raw.githubusercontent.com/Gopack2/A-Better-Weather-Tile-1.0/master/Alert%20Icons/TOW.png"
+      		state "[WRN]",icon:"https://raw.githubusercontent.com/Gopack2/A-Better-Weather-Tile-1.0/master/Alert%20Icons/WRN.png"
+       		state "[SEW]",icon:"https://raw.githubusercontent.com/Gopack2/A-Better-Weather-Tile-1.0/master/Alert%20Icons/SEW.png"
+     		state "[FLO]",icon:"https://raw.githubusercontent.com/Gopack2/A-Better-Weather-Tile-1.0/master/Alert%20Icons/FLO.png"
+      		state "[WAT]",icon:"https://raw.githubusercontent.com/Gopack2/A-Better-Weather-Tile-1.0/master/Alert%20Icons/WAT.png"
+    		state "[WND]",icon:"https://raw.githubusercontent.com/Gopack2/A-Better-Weather-Tile-1.0/master/Alert%20Icons/WND.png"
+       		state "[SVR]",icon:"https://raw.githubusercontent.com/Gopack2/A-Better-Weather-Tile-1.0/master/Alert%20Icons/SVR.png"
+    		state "[HEA]",icon:"https://raw.githubusercontent.com/Gopack2/A-Better-Weather-Tile-1.0/master/Alert%20Icons/HEA.png"
+     		state "[FOG]",icon:"https://raw.githubusercontent.com/Gopack2/A-Better-Weather-Tile-1.0/master/Alert%20Icons/FOG.png"
+    		state "[SPE]",icon:"https://raw.githubusercontent.com/Gopack2/A-Better-Weather-Tile-1.0/master/Alert%20Icons/SPE.png"     
+    		state "[FIR]",icon:"https://raw.githubusercontent.com/Gopack2/A-Better-Weather-Tile-1.0/master/Alert%20Icons/FIR.png"
+    	    state "[VOL]",icon:"https://raw.githubusercontent.com/Gopack2/A-Better-Weather-Tile-1.0/master/Alert%20Icons/VOL.png"
+       		state "[HWW]",icon:"https://raw.githubusercontent.com/Gopack2/A-Better-Weather-Tile-1.0/master/Alert%20Icons/HWW.png"
+       		state "[REC]",icon:"https://raw.githubusercontent.com/Gopack2/A-Better-Weather-Tile-1.0/master/Alert%20Icons/REC.png"
+       		state "[REP]",icon:"https://raw.githubusercontent.com/Gopack2/A-Better-Weather-Tile-1.0/master/Alert%20Icons/REP.png"
+       		state "[PUB]",icon:"https://raw.githubusercontent.com/Gopack2/A-Better-Weather-Tile-1.0/master/Alert%20Icons/PUB.png"
        }
        standardTile("ForecastGraphic", "device.ForecastGraphic", inactiveLabel: false, width: 4, height: 2, decoration: "flat", wordWrap: true) {
        		state "[null]",icon:"https://www.theweather.com/wimages/fotoba7037436d671b4cbf1465324d987c6b.png"
@@ -356,22 +356,22 @@ metadata {
     	standardTile("Blank", "device.blank", width: 2, height: 2,  inactiveLabel: false, decoration: "flat") 
   		
     	standardTile("loc1", "device.loc1", width: 2, height: 1, inactiveLabel: false, decoration: "flat") {
-			state "active", action:"loc1", icon:"https://raw.githubusercontent.com/Gopack2/A-Better-Weather/master/Lighthouse%20Active.png"
-	   		state "inactive", action:"loc1", icon:"https://raw.githubusercontent.com/Gopack2/A-Better-Weather/master/Lighthouse%20Inactive.png"
+			state "active", action:"loc1", icon:"https://raw.githubusercontent.com/Gopack2/A-Better-Weather-Tile-1.0/master/Location%20Icons/Location%201%20Active.png"
+	   		state "inactive", action:"loc1", icon:"https://raw.githubusercontent.com/Gopack2/A-Better-Weather-Tile-1.0/master/Location%20Icons/Location%201%20Inactive.png"
 		}
         standardTile("loc1Name", "device.loc1Name", inactiveLabel: false, width: 2, height: 1, decoration: "flat", wordWrap: true) {
          state "${location1Name}", label: '${currentValue}'
         }
 		standardTile("loc2", "device.loc2", width: 2, height: 1, inactiveLabel: false, decoration: "flat") {
-			state "active", action:"loc2", icon:"https://raw.githubusercontent.com/Gopack2/A-Better-Weather/master/Cabin%20Active.png"
-          	state "inactive", action:"loc2", icon:"https://raw.githubusercontent.com/Gopack2/A-Better-Weather/master/Cabin%20Inactive.png"
+			state "active", action:"loc2", icon:"https://raw.githubusercontent.com/Gopack2/A-Better-Weather-Tile-1.0/master/Location%20Icons/Location%202%20%20Active.png"
+          	state "inactive", action:"loc2", icon:"https://raw.githubusercontent.com/Gopack2/A-Better-Weather-Tile-1.0/master/Location%20Icons/Location%202%20Inactive.png"
 	    }
    		standardTile("loc2Name", "device.loc2Name", inactiveLabel: false, width: 2, height: 1, decoration: "flat", wordWrap: true) {
        		state "${location2Name}", label: '${currentValue}'
      	}   
 		standardTile("loc3", "device.loc3", width: 2, height: 1, inactiveLabel: false, decoration: "flat",backgroundcolor: "#bc2323"   ) {
-			state "active", action:"loc3", icon:"https://raw.githubusercontent.com/Gopack2/A-Better-Weather/master/Arizona%20Active.png"
-          	state "inactive", action:"loc3", icon:"https://raw.githubusercontent.com/Gopack2/A-Better-Weather/master/Arizona%20Inactiuve.png"
+			state "active", action:"loc3", icon:"https://raw.githubusercontent.com/Gopack2/A-Better-Weather-Tile-1.0/master/Location%20Icons/Location%203%20Active.png"
+          	state "inactive", action:"loc3", icon:"https://raw.githubusercontent.com/Gopack2/A-Better-Weather-Tile-1.0/master/Location%20Icons/Location%203%20Inactive.png"
 	    }   
          standardTile("loc3Name", "device.loc3Name", inactiveLabel: false, width: 2, height: 1, decoration: "flat", wordWrap: true) {
          	state "${locationName}", label: '${currentValue}'
