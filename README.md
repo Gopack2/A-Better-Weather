@@ -28,6 +28,7 @@ Tap on the cog in the upper right corner.
     1. Location names set up for New York, Chicago, and Los Angeles.
     2. Location Zip codes are preset to New York, Chicago, and Los Angeles.
     3. Measure units are preset to imperial
+    
     4. Time format is preset to 12 hour format
     5. Refresh time (how often it gets weather) is set to run every 15 minutes     
     
