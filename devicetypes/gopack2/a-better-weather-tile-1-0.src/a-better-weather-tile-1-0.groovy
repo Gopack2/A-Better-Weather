@@ -16,7 +16,7 @@
 *
 *  Date: 2013-04-30
 * 
-* I adapted the smart weather station tile 2.o from TKSID.  Thanks for giving me a jumping off point.  This is my first attempt as t0
+* I adapted the smart weather station tile 2.o from TKSID.  Thanks for giving me a jumping off point.  This is my first attempt as to
 * building a weather device handler.  
 *
 * What I had a need for was to be able to get weather for locations besides my Smartthings hub location.  So I adapted this "Better Weather Tile 1.0"
@@ -52,13 +52,11 @@ metadata {
         attribute "almanacNormalTempLowRecord", "number"
         attribute "almanacAirportCode", "string"
        	attribute "alert", "string"
-        //attribute "alertIcon","string"
         attribute "alertKeys", "string"
         attribute "alertMessage","string"
   		attribute "city", "string"
        	attribute "country", "string"
-        attribute "defaultZip", "String"
- 		attribute "dewPoint","string"
+        attribute "dewPoint","string"
      	attribute "elevation", "string"       
         attribute "feelsLike", "string"
        	attribute "ForecastFriday","string"
@@ -79,8 +77,7 @@ metadata {
 		attribute "fullLocation", "string"
         attribute "heatIndex","string"
      	attribute "latitude", "string"
- 		attribute "loc1Overide","enum"
-        attribute "localSunrise", "string"
+ 		attribute "localSunrise", "string"
         attribute "localSunset", "string"
         attribute "localMoonrise", "string"
         attribute "localMoonset", "string"
@@ -258,7 +255,7 @@ metadata {
         valueTile("lastSTupdate", "device.lastSTupdate", inactiveLabel: false, width: 2, height: 1, decoration: "flat", wordWrap: true) {
             state("default", label: 'Last Updated\n ${currentValue}')
         }
-        valueTile("humidity", "device.humidity", inactiveLabel: false, width: 2, height: 1, decoration: "flat", wordWrap: true) {
+        valueTile("humidity", "device.humidity", inactiveLabel: false, width: 1, height: 1, decoration: "flat", wordWrap: true) {
             state "default", label:'Humidity ${currentValue}%', unit:"%"
         }
         valueTile("weather", "device.weather", inactiveLabel: false, width: 1, height: 1, decoration: "flat", wordWrap: true) {
@@ -276,7 +273,7 @@ metadata {
         standardTile("refresh", "device.weather", inactiveLabel: false, width: 1, height: 1, decoration: "flat", wordWrap: true) {
             state "default", label: "", action: "poll", icon:"st.secondary.refresh"
         }
-        standardTile("alert", "device.alert", inactiveLabel: false, width: 6, height: 3, decoration: "flat", wordWrap: true) {
+        standardTile("alert", "device.alert", inactiveLabel: false, width: 4, height: 2, decoration: "flat", wordWrap: true) {
       		state "[null]",icon:"https://github.com/Gopack2/A-Better-Weather/raw/master/Default.png"
      		state "[WIN]",icon:"https://github.com/Gopack2/A-Better-Weather/raw/master/WIN.png"
      		state "[TOR]",icon:"https://github.com/Gopack2/A-Better-Weather/raw/master/TOR.png"
@@ -320,13 +317,13 @@ metadata {
         }
        standardTile("water", "device.water", inactiveLabel: false, width: 1, height: 1, decoration: "flat", wordWrap: true) {
             state "default", label: 'updating...', icon: "st.unknown.unknown.unknown"
-            state "true",        icon: "st.alarm.water.wet",        backgroundColor:"#ff9999"
-            state "false",       icon: "st.alarm.water.dry",        backgroundColor:"#ffffff"
+            state "true", icon: "st.alarm.water.wet", backgroundColor:"#ff9999"
+            state "false", icon: "st.alarm.water.dry", backgroundColor:"#ffffff"
         }
-        valueTile("dewpoint", "device.dewPoint", inactiveLabel: false, width: 2, height: 1, decoration: "flat", wordWrap: true) {
+        valueTile("dewpoint", "device.dewPoint", inactiveLabel: false, width: 1, height: 1, decoration: "flat", wordWrap: true) {
             state "default", label:'Dewpoint ${currentValue}°'
         }
-        valueTile("pressure", "device.pressureTrend", inactiveLabel: false, width: 3, height: 1, decoration: "flat", wordWrap: true) {
+        valueTile("pressure", "device.pressureTrend", inactiveLabel: false, width: 2, height: 1, decoration: "flat", wordWrap: true) {
             state "pressureTrend", label: 'Barometric Pressure ${currentValue}'
         }
         valueTile("windinfo", "device.windString", inactiveLabel: false, width: 2, height: 1, decoration: "flat", wordWrap: true) {
@@ -382,7 +379,7 @@ metadata {
  
  	main ("temperature2")
          //details(["alert", "loc1","loc2","loc3","loc1Name","loc2Name","loc3Name","temperatureI", "weatherIcon","weather","humidity" , "dewpoint", "windinfo", "pressure", "solarradiation","light", "city", "rise", "set", "lastSTupdate", "percentPrecip", "PrecipToday","PrecipLastHour", "water", "refresh"])
- 		details(["loc1","loc2","loc3","loc1Name","loc2Name","loc3Name","alert","temperatureI", "weatherIcon","weather","humidity" , "dewpoint", "windinfo", "pressure", "solarradiation", "city", "rise", "set", "lastSTupdate", "percentPrecip", "PrecipToday","PrecipLastHour", "water", "refresh"])
+ 		details(["loc1","loc2","loc3","loc1Name","loc2Name","loc3Name","alert","temperatureI", "weatherIcon","weather","water", "refresh","humidity" ,  "dewpoint", "windinfo", "pressure", "rise", "set", "lastSTupdate", "percentPrecip", "PrecipToday","PrecipLastHour"])
  		}
 }
 // parse events into attributes
@@ -390,16 +387,44 @@ def parse(String description) {
     log.debug "Parsing '${description}'"
 	}
 def installed() {
-	runEvery15Minutes(poll)
+	
 	}
 
 def uninstalled() {
 	unschedule()
 	}
 def initialize() {
-    //log.debug" location 1 zip is $location1Zip"
-    //state.loc1ZipDefault = $settings.location1Zip
-    //state.loc1Overide = "true" 
+sendEvent("name":"Zip","value":location1Zip)
+    sendEvent("name":"defaultZip","value":location1Zip)
+    sendEvent("name":"loc1Overide","value":"false")
+    sendEvent(name:"loc1Name",value:location1Name)
+    sendEvent(name:"loc2Name",value:location2Name)
+    sendEvent(name:"loc3Name",value:location3Name)
+  	switch (runEvery) {       
+       	case "1 minute" :
+        	runEvery1Minute(poll)
+        	break;
+		case "5 minutes" :
+       		runEvery5Minutes(poll)
+        	break;
+        case "10 minutes" :
+       		runEvery10Minutes(poll)
+        	break;
+        case "15 minutes" :
+       		runEvery15Minutes(poll)
+        	break;
+        case "30 minutes" :
+       		runEvery30Minutes(poll)
+        	break;
+        case "1 hour" :
+       		runEvery1Hour(poll)
+        	break;
+        case "3 hours" :
+       		runEvery3Hours(poll)
+        	break;
+        default :
+        	runEvery15Minutes(poll)
+    	}
     }
 def updated() {
 	log.debug" location 1 zip is $location1Zip"
@@ -486,8 +511,7 @@ def loc2() {
     sendEvent(name:"loc3",value:"inactive", displayed: false)
  	sendEvent(name:"loc1",value:"inactive" , displayed: false)
 	sendEvent(name:"loc2",value:"active", displayed: false)
-  log.debug"yup"
-  poll()
+  	poll()
 	}
 def loc3() {
    	sendEvent(name: "city", value: location3Name, displayed: false)
