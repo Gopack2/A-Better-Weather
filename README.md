@@ -29,8 +29,7 @@ To install manually:
   1. Tap on the cog in the upper right corner.  
   2. Fill in the necessary preferences that you wish to customize.
   
-  The device handler has defaults Preset up:
-  
+  The device handler has defaults Preset up.
     1. Location names preset to New York, Chicago, and Los Angeles.
     2. Location Zip codes are preset to New York, Chicago, and Los Angeles.
     3. Measure units are preset to imperial
