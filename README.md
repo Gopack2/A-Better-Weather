@@ -37,5 +37,8 @@ To install manually:
     5. Refresh time (how often it gets weather) is preset to run every 15 minutes  
     
     
-![Preview](https://raw.githubusercontent.com/Gopack2/A-Better-Weather-Tile-1.0/master/Arizona%20Active.png)
-![Preview](https://raw.githubusercontent.com/Gopack2/A-Better-Weather-Tile-1.0/master/Arizona%20Active.png)
+![Preview](https://raw.githubusercontent.com/Gopack2/A-Better-Weather-Tile-1.0/master/pics/IMG-2852.PNG)
+![Preview](https://raw.githubusercontent.com/Gopack2/A-Better-Weather-Tile-1.0/master/pics/IMG-2853.PNG)
+![Preview](https://raw.githubusercontent.com/Gopack2/A-Better-Weather-Tile-1.0/master/pics/IMG-2854.PNG)
+![Preview](https://raw.githubusercontent.com/Gopack2/A-Better-Weather-Tile-1.0/master/pics/IMG-2855.PNG)
+![Preview](https://raw.githubusercontent.com/Gopack2/A-Better-Weather-Tile-1.0/master/pics/IMG-2856.PNG)
