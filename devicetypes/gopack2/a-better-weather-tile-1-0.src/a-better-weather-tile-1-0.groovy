@@ -28,11 +28,12 @@
 * This also works with webCore.  You can change locations from there (loc1, loc2, loc3) and access all the attributes from webCore as well.  I personally 
 * am the kind of person that likes point and click vs remembering the syntax in webCore to get information.  This should make it easier for many starting out 
 * building pistons.
-* Good Luck and Hope You Find a Use for it and enjoy!
+* Good Luck and Hope You Find a Use for it and enjoy! 
 
 *
 *
-* 3/10/2018 Initial Release
+* 3/15/2018 Initial Release
+* 3/16/2018 updated preferences section to help with setting up with locations outside US
 **/
 
 
@@ -147,12 +148,12 @@ metadata {
         command "loc1RestoreDefaultZip"
     }
   	preferences {
-    	input name: "location1Zip", type: "string", title: "Enter A Zip Code For Location 1", description: "Enter a Zipcode For Location 1", required: false, defaultValue: "10001"
+    	input name: "location1Zip", type: "string", title: "Enter A Zip Code For Location 1. For the US you can use zipcode, State/City or Latitude/Longitude.  If using outside the US Try UK/city or Latitude/Longitude. ", description: "Enter a Zipcode For Location 1", required: false, defaultValue: "10001"
   		input name: "location1Name", type: "string", title: "Enter A Name To Display For Location 1", description: "Enter a Name For Your Zipcode", required: false, defaultValue: "New York"
-     	input name: "location2Zip", type: "string", title: "Enter A Zip Code For Location 2", description: "Enter a Zipcode For Location 2", required: false, defaultValue: "60920"
+     	input name: "location2Zip", type: "string", title: "Enter A Zip Code For Location 2. For the US you can use zipcode, State/City or Latitude/Longitude.  If using outside the US Try UK/city or Latitude/Longitude.", description: "Enter a Zipcode For Location 2.", required: false, defaultValue: "60920"
   		input name: "location2Name", type: "string", title: "Enter A Name To Display For Location 2", description: "Enter a Name For Your Zipcode", required: false, defaultValue: "Chicago"
-		input name: "location3Zip", type: "string", title: "Enter A Zip Code For Location 3", description: "Enter a Zipcode For Location 3", required: false, defaultValue: "90001"
-        input name: "location3Name", type: "string", title: "Enter A Name To Display For Location 3", description: "Enter a Name For Your Zipcode", required: false, defaultValue: "Los Angeles"
+		input name: "location3Zip", type: "string", title: "Enter A Zip Code For Location 3.  For the US you can use zipcode, State/City or Latitude/Longitude.  If using outside the US Try UK/city or Latitude/Longitude.", description: "Enter a Zipcode For Location 3.", required: false, defaultValue: "90001"
+        input name: "location3Name", type: "string", title: "Enter A Name To Display For Location 3.", description: "Enter a Name For Your Zipcode", required: false, defaultValue: "Los Angeles"
         input ("measUnits", "enum", title: "Measuerment units", required: false, defaultValue:"imperial",
 			options: [ "imperial":"Imperial", "metric":"Metric" ])
     	input ("timeFormat", "enum", title: "Time Format", required: false, defaultValue: "12Hour",
@@ -374,7 +375,7 @@ metadata {
           	state "inactive", action:"loc3", icon:"https://raw.githubusercontent.com/Gopack2/A-Better-Weather-Tile-1.0/master/Location%20Icons/Location%203%20Inactive.png"
 	    }   
          standardTile("loc3Name", "device.loc3Name", inactiveLabel: false, width: 2, height: 1, decoration: "flat", wordWrap: true) {
-         	state "${locationName}", label: '${currentValue}'
+         	state "${locationName}",label: '${currentValue}'
         }
  
  	main ("temperature2")
