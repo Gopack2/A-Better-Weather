@@ -1,7 +1,7 @@
 A Better Weather Tile 1.0
 
-Welcome.  This is a custom device handler that allows you to get weather related info from more than just your hub location.  It also works with webCore.  You can build pistons based on the attributes in the handler.  Smartthings and webCore can get this information for the hub location, but is more difficult to get info for locations away from your hub.  Thus the reason I built this.  I used the smart weather tile device handler as a spring b0ard to get me started and it went from there. Thank You TKSID!
-I am a person that would rather use point and click than try to hash away at syntax to get inf0mation that I want.  Most of what is available from digital weather undergr0uind is here as an attribute.  
+Welcome.  This is a custom device handler that allows you to get weather related info from more than just your hub location.  It also works with webCore.  You can build pistons based on the attributes in the handler.  Smartthings and webCore can get this information for the hub location, but is more difficult to get info for locations away from your hub.  Thus the reason I built this.  I used the smart weather tile device handler as a spring board to get me started and it went from there. Thank You TKSID!
+I am a person that would rather use point and click than try to hash away at syntax to get infomation that I want.  Most of what is available from digital weather undergrouind is here as an attribute.  
 
 To install manually:
   1. Open the directory with the device handler in it.  
