@@ -34,6 +34,7 @@
 *
 * 3/15/2018 Initial Release
 * 3/16/2018 updated preferences section to help with setting up with locations outside US
+* 3/23/2018 Changed the way the temperature tile displays information and pulls location fr09m preferences defined by user
 **/
 
 
@@ -163,11 +164,11 @@ metadata {
        	input "weather", "device.smartweatherStationTile", title: "Weather...", multiple: true, required: false
     }
     tiles(scale:2) {
-  		multiAttributeTile(name:"temperatureI", type:"generic", width:1, height:1, canChangeIcon: false) {
-	       	tileAttribute("device.temperature", key: "PRIMARY_CONTROL") {
-                    attributeState("temperature" ,label:'${currentValue}°',unit:"F",
-                    backgroundColors:[					
-                    /*Celsius
+  		multiAttributeTile(name:"temperature", type:"generic", width:1, height:1, canChangeIcon: false) {
+	       	tileAttribute("device.tempTile", key: "PRIMARY_CONTROL") {
+                    attributeState("temperature" ,label:'${currentValue}',
+                    backgroundColors:[	
+                /*Celsius
                     [value: 0, color: "#153591"],
 					[value: 7, color: "#1e9cbb"],
 					[value: 15, color: "#90d2a7"],
@@ -186,22 +187,34 @@ metadata {
 					[value: 96, color: "#bc2323"],]
                     )
                 }
-			tileAttribute("device.city", key: "SECONDARY_CONTROL") {
-            	attributeState("default", label:'											${currentValue}') }
+			//tileAttribute("device.city", key: "SECONDARY_CONTROL") {
+            //	attributeState("default", label:'											${currentValue}') }
   	        tileAttribute("device.feelsLike", key: "SECONDARY_CONTROL") {
                 attributeState("default", label:'Feels Like ${currentValue}°') }
      		}  
  		multiAttributeTile(name:"temperatureM", type:"generic", width:1, height:1, canChangeIcon: false) {
-	       	tileAttribute("device.temperature", key: "PRIMARY_CONTROL") {
-            	attributeState("temperature" ,label:'${currentValue}°C',
-                 	backgroundColors:[
-						[value: 32, color: "#153591"],
-						[value: 44, color: "#1e9cbb"],
-						[value: 59, color: "#90d2a7"],
-						[value: 74, color: "#44b621"],
-						[value: 84, color: "#f1d801"],
-						[value: 92, color: "#d04e00"],
-						[value: 98, color: "#bc2323"],])
+	       	tileAttribute("device.tempTile", key: "PRIMARY_CONTROL") {
+                    attributeState("temperature" ,label:'${currentValue}',
+                    backgroundColors:[	
+                //Celsius
+                    [value: 0, color: "#153591"],
+					[value: 7, color: "#1e9cbb"],
+					[value: 15, color: "#90d2a7"],
+					[value: 23, color: "#44b621"],
+					[value: 28, color: "#f1d801"],
+					[value: 35, color: "#d04e00"],
+					[value: 37, color: "#bc2323"],]
+                   
+                  /*  // Farenheight
+                    [value: 40, color: "#153591"],
+					[value: 44, color: "#1e9cbb"],
+					[value: 59, color: "#90d2a7"],
+					[value: 74, color: "#44b621"],
+					[value: 84, color: "#f1d801"],
+					[value: 95, color: "#d04e00"],
+					[value: 96, color: "#bc2323"],]
+                    */
+                    )
                 }
 			tileAttribute("device.city", key: "SECONDARY_CONTROL") {
             	attributeState("default", label:'											${currentValue}') }
@@ -377,10 +390,10 @@ metadata {
          standardTile("loc3Name", "device.loc3Name", inactiveLabel: false, width: 2, height: 1, decoration: "flat", wordWrap: true) {
          	state "${locationName}",label: '${currentValue}'
         }
- 
- 	main ("temperature2")
-         //details(["alert", "loc1","loc2","loc3","loc1Name","loc2Name","loc3Name","temperatureI", "weatherIcon","weather","humidity" , "dewpoint", "windinfo", "pressure", "solarradiation","light", "city", "rise", "set", "lastSTupdate", "percentPrecip", "PrecipToday","PrecipLastHour", "water", "refresh"])
- 		details(["loc1","loc2","loc3","loc1Name","loc2Name","loc3Name","alert","temperatureI", "weatherIcon","weather","water", "refresh","humidity" ,  "dewpoint", "windinfo", "pressure", "rise", "set", "lastSTupdate", "percentPrecip", "PrecipToday","PrecipLastHour"])
+
+ main ("temperature2")
+         //details(["alert", "loc1","loc2","loc3","loc1Name","loc2Name","loc3Name","temperature", "weatherIcon","weather","humidity" , "dewpoint", "windinfo", "pressure", "solarradiation","light", "city", "rise", "set", "lastSTupdate", "percentPrecip", "PrecipToday","PrecipLastHour", "water", "refresh"])
+ 		details(["loc1","loc2","loc3","loc1Name","loc2Name","loc3Name","alert","temperature", "weatherIcon","weather","water", "refresh","humidity" ,  "dewpoint", "windinfo", "pressure", "rise", "set", "lastSTupdate", "percentPrecip", "PrecipToday","PrecipLastHour"])
  		}
 }
 // parse events into attributes
@@ -480,6 +493,7 @@ def loc1RestoreDefaultZip() {
 }
 // My City Button Controls
 def loc1() {
+state.tileLocName = location1Name
 	switch (state.loc1Overide) {
     	case "false":
             sendEvent(name: "city", "value":location1Name, displayed: false)   
@@ -490,6 +504,7 @@ def loc1() {
             poll()
             break;
     	case"true":
+            
             sendEvent(name: "city", "value":location1Name, displayed: false)   
             sendEvent(name:"Zip","value": state.mobileZip , displayed: false)
             sendEvent(name:"loc3",value:"inactive", displayed: false)
@@ -507,6 +522,7 @@ def loc1() {
     	}
 	}
 def loc2() {
+state.tileLocName = location2Name
 	sendEvent(name: "city", value:location2Name, displayed: false)
     sendEvent(name:"Zip","value":location2Zip, displayed: false)
     sendEvent(name:"loc3",value:"inactive", displayed: false)
@@ -515,6 +531,7 @@ def loc2() {
   	poll()
 	}
 def loc3() {
+state.tileLocName = location3Name
    	sendEvent(name: "city", value: location3Name, displayed: false)
     sendEvent(name:"Zip","value":location3Zip, displayed: false)
     sendEvent(name:"loc2",value:"inactive", displayed: false)
@@ -554,7 +571,9 @@ def poll() {
 		if (measUnits) {
             switch (measUnits) {
             	case "imperial" :
-            			send(name: "temperature", value: Math.round(obs.temp_f), unit: "° F", displayed: false)
+            			def Temp = Math.round(obs.temp_f)
+                        send(name: "tempTile", value: "${Temp}°F \n ${state.tileLocName}" , displayed: false)
+                        send(name: "temperature", value: Math.round(obs.temp_f) , unit: "° F", displayed: false)
             			send(name: "feelsLike", value: Math.round(obs.feelslike_f as Double), unit: "° F", displayed: false)
             			send(name: "dewPoint", value: Math.round(obs.dewpoint_f as Double), unit: "° F", displayed: false)
           			if ( obs.windchill_f == "NA") (
@@ -569,7 +588,7 @@ def poll() {
                 		send(name: "pressureTrend", value: "${obs.pressure_in} inches \n and (${pressure_trend_text})", displayed: false)
                 		send(name: "pressure", value: "${obs.pressure_in}",unit:" inches", displayed: false)
                 		send(name: "visibility", value: "${obs.visibility_mi}",unit:" mi", displayed: false)
-                		send(name: "precipToday", value: "${obs.precip_today_in}",unit:" in", displayed: false)
+                		send(name: "precipToday", value: "${obs.precip_today_in} Inches",unit:" in", displayed: false)
                 	if (obs.precip_1hr_in.toFloat() > 0) {
             			sendEvent( name: 'water', value: "true" , displayed: false)
             			send(name: "precipLastHour", value: "${obs.precip_1hr_in}",unit:" in", displayed: false)
@@ -585,7 +604,9 @@ def poll() {
                 		send(name: "wind", value: "${obs.wind_mph}",unit:" mph", displayed: false)
                 break;
             case "metric":
-                		send(name: "temperature", value: Math.round(obs.temp_c), unit: "° C", displayed: false)
+                		def Temp = Math.round(obs.temp_c)
+                        send(name: "tempTile", value: "${Temp}°C \n ${state.tileLocName}" , displayed: false)
+                        send(name: "temperature", value: Math.round(obs.temp_c), unit: "° C", displayed: false)
             			send(name: "feelsLike", value: Math.round(obs.feelslike_c as Double), unit: "° C", displayed: false)
             			send(name: "dewPoint", value: Math.round(obs.dewpoint_c as Double), unit: "° C", displayed: false)
             		if ( obs.windchill_c== "NA") (
@@ -615,7 +636,9 @@ def poll() {
                 		send(name: "wind", value: "${obs.wind_kph}",unit:" kph", displayed: false)
                 break;
             default:
-            			send(name: "temperature", value: Math.round(obs.temp_f), unit: "° F", displayed: false)
+            			def Temp = Math.round(obs.temp_f)
+                        send(name: "tempTile", value: "${Temp}°F \n ${state.tileLocName}" , displayed: false)
+                        send(name: "temperature", value: Math.round(obs.temp_f), unit: "° F", displayed: false)
             			send(name: "feelsLike", value: Math.round(obs.feelslike_f as Double), unit: "° F", displayed: false)
             			send(name: "dewPoint", value: Math.round(obs.dewpoint_f as Double), unit: "° F", displayed: false)
            				send(name: "windChill", value: Math.round(obs.windchill_f as Double), unit: "°F", displayed: false)
