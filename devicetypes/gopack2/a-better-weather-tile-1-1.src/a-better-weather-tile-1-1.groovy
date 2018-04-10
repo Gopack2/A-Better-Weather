@@ -354,7 +354,7 @@ metadata {
        		state "[null]",icon:"https://www.theweather.com/wimages/fotoba7037436d671b4cbf1465324d987c6b.png"
     	//state "default",icon:'${currentValue|'
     	}
-      	valueTile("alertMessage", "device.alertMessage", inactiveLabel: false, width: 6, height: 12, decoration: "flat", wordWrap: true) {
+      	valueTile("alertMessage", "device.alertMessage", inactiveLabel: false, width: 10, height: 12, decoration: "flat", wordWrap: true) {
             state "default", label:'${currentValue}'
     	}
       	valueTile("rise", "device.localSunrise", inactiveLabel: false, width: 2, height: 1, decoration: "flat", wordWrap: true) {
@@ -970,10 +970,11 @@ def poll() {
            		if (!oldKeys.contains(alert.type + alert.date_epoch)) {
                  	def msg = "${alert.description} from ${alert.date} until ${alert.expires}"
                    	//send(name: "alert", value: pad(alert.description), descriptionText: msg, isStateChange: true)
-                    send(name: "alertMessage",value: " ${alert.message}",displayed: true)
+                    send(name: "alertMessage",value: "${alert.message}",displayed: true)
                     sendEvent(name:"alert", value:"${alertType}", displayed: false)
                     newAlerts = true
-                	}
+               
+                }
             }
 
     	if (!newAlerts && device.currentValue("alert") != noneString) {
